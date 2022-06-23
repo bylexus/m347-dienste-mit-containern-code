@@ -1,0 +1,29 @@
+{% extends 'layouts/layout-master.html' %} {% block content%}
+<h1>Formular-Demo</h1>
+
+<p>Dieses Formular dient als Demo für:</p>
+
+<ul>
+  <li>das Senden von Formulardaten an ein Backend</li>
+  <li>das Auswerten der Formulardaten im Backend</li>
+  <li>das Senden einer Antwort aufgrund der Daten vom Server</li>
+</ul>
+
+<form action="/feedback" method="POST" enctype="application/x-www-form-urlencoded">
+  <div>
+    <label>
+      Name:
+      <input name="name" />
+    </label>
+  </div>
+  <div>
+    <label>
+      Vorname:
+      <input name="vorname" />
+    </label>
+  </div>
+  <div>
+	<button type="submit">Absenden</button>
+  </div>
+</form>
+{% endblock %}

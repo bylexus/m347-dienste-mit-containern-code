@@ -1,0 +1,38 @@
+{
+  "name": "nunjucks-templating-starter",
+  "version": "1.0.0",
+  "description": "Boilerplate for generating HTML templates with nunjucks",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp default",
+    "watch": "gulp watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nunjucks",
+    "starter",
+    "npm",
+    "templating",
+    "html",
+    "sass"
+  ],
+  "author": "Chidi Williams",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.27.5",
+    "gulp": "^4.0.2",
+    "gulp-minify": "^3.1.0",
+    "gulp-nunjucks-render": "^2.2.3",
+    "gulp-sass": "^5.0.0",
+    "node-sass": "^6.0.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "knex": "^2.1.0",
+    "nodemailer": "^6.7.5",
+    "pg": "^8.7.3",
+    "sqlite3": "^5.0.8"
+  }
+}
