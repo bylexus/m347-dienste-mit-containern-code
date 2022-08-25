@@ -17,13 +17,17 @@ Die monolithische Applikation besteht aus:
 
 ## Bilden der statischen Webseite
 
-Der Frontend-Teil besteht aus einer statisch gebildeten Webseite, welche der Server
+Der Frontend-Teil besteht dann aus der statisch gebildeten Webseite, welche der Server
 unter `monolith/site/` ausliefert. Diese muss (manuell) gebildet werden:
+
+Wir benutzen die Static-Site-Builder-Infrastruktur aus dem letzten Modul M293:
+Diese bildet anhand von Templates die Seite unter `monolith/src/` als
+fertig generierte HTML-Seiten nach `monolith/site/`.
 
 ```sh
 $ cd monolith/
-$ npm install # einmalig
-$npm run build
+$ npm install  # einmalig
+$npm run build # bildet monolith/src/ --> monolith/site/
 ```
 
 Dies erstellt / kopiert die statischen Webseiten-Files nach `monolith/site`,
@@ -34,12 +38,22 @@ Wenn das Docker-Image verwendet wird, kann dies folgendermassen angestosssen wer
 
 ```sh
 # unter unix-artigen Systemen:
-$ cd monolith/
-$ docker run --rm -ti -v "$(pwd)":/src -w /src node:16 npm run build
+$       cd monolith/
+$       docker run --rm -ti -v "$(pwd)":/app -w /app node:16 bash
+docker> npm install
+docker> npm run build
 
 # unter Windows:
 $ cd monolith/
-$ docker run --rm -ti -v "%cd%":/src -w /src node:16 npm run build
+$ docker run --rm -ti -v "%cd%":/app -w /app node:16 bash
+docker> npm install
+docker> npm run build
+
+# unter Windows mit PowerShell:
+$ cd monolith/
+$ docker run --rm -ti -v "$pwd":/app -w /app node:16 bash
+docker> npm install
+docker> npm run build
 ```
 
 
@@ -59,11 +73,15 @@ Oder mittels einem Docker-Image (Hier: NodeJS 16-Image vom dockerhub):
 ```sh
 # unter unix-artigen Systemen:
 $ cd monolith/
-$ docker run --rm -ti -v "$(pwd)":/src -w /src -p 3000:3000 node:16 node server.js
+$ docker run --rm -ti -v "$(pwd)":/app -w /app -p 3000:3000 node:16 node server.js
 
 # unter Windows:
 $ cd monolith/
-$ docker run --rm -ti -v "%cd%":/src -w /src -p 3000:3000 node:16 node server.js
+$ docker run --rm -ti -v "%cd%":/app -w /app -p 3000:3000 node:16 node server.js
+
+# unter Windows mit PowerShell:
+$ cd monolith/
+$ docker run --rm -ti -v "$pwd":/app -w /app -p 3000:3000 node:16 node server.js
 ```
 
 Der Server läuft nun auf TCP Port `3000` und liefert Ihre statische Seite unter `monolith/site/` aus.
@@ -82,5 +100,4 @@ und bauen diese statische Seite aus:
 
 Ziel ist, dass die jetzt monolithische Applikation in ein paar "Micro-Services" aufgetrennt wird, welche
 als Container-Dienste zusammenspielen.
-
 

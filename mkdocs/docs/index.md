@@ -1,17 +1,6 @@
-# Welcome to MkDocs
+# M347 - Dienste mit Containern
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Diese `mkdocs`-Dokumentation dient als Ihre Projekt-Dokumentation.
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Gestalten / Organisieren Sie diese nach Ihren eigenen Präferenzen / Vorstellungen!
+Dieser Inhalt dient nur als BEISPIEL.
