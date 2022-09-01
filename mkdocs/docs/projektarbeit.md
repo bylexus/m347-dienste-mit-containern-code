@@ -9,7 +9,7 @@ Sie am Schluss als "Gesamtpaket" als Projektarbeit abliefern.
 
 ## Ziel des Gesamtprojektes
 
-Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: Ziel ist, dass Sie Ihre Webseite folgenermassen ausbauen:
+Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: Ziel ist, dass Sie Ihre Webseite folgendermassen ausbauen:
 
 * Ihre Webseite wird aus **Templates (HTML, SCSS) als statische Webseite gebildet**
 * Ihre Webseite wird von einem **"richtigen" Webserver ausgeliefert**
@@ -93,7 +93,7 @@ Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuli
 
 ## Abgabe
 
-Sie geben den **gesamten Code inkl. Konfiguration und Datenbank-Scripte** via gihub classroom-Repository ab. Ihr git-Repository sollte beinhalten:
+Sie geben den **gesamten Code inkl. Dokumentation, Konfiguration und Datenbank-Scripte** via gihub classroom-Repository ab. Ihr git-Repository sollte beinhalten:
 
 * Die Dokumentation als `mkdocs`-Dokumentation
 * Alle Scripte, Dateien und Konfigurationen, um alle Container-Dienste
@@ -104,7 +104,7 @@ Sie geben den **gesamten Code inkl. Konfiguration und Datenbank-Scripte** via gi
   * Kommentar-Container mit dem Kommentar-API
   * Datenbank-Container für die PostgreSQL-Datenbank
 	* Dazu gehört ein init-Script, welches das Datenbank-Schema beim Erstellen des Containers erzeugt (siehe <https://hub.docker.com/_/postgres/>, Abschnitt "Initialization Scripts")
-	* mkdocs-Container, der die Dokumentation als Dienst bereitstellt
+  * mkdocs-Container, der die Dokumentation als Dienst bereitstellt
 
 Ihr Repository muss alles notwendige liefern, damit ich die Dienste starten kann.
 
@@ -120,6 +120,33 @@ Danach müssen die Dienste alle gebaut sein und laufen, inkl. der notwendigen
 Port-Weiterleitungen.
 
 **Sollten Sie für den Setup spezielle Instruktionen liefern wollen, erwarte ich ein README.md-File im obersten Verzeichnis des Repository!**
+
+### Dokumentation
+
+Ich erwarte eine Dokumentation in Form eines `mkdocs`-Markdown-Containers. Die Dokumentation zeigt von Ihrem Projekt folgendes:
+
+* **Bedienungshinweise:**<br>
+  Falls Ihre Applikation zum Erstellen / Builden / Starten spezielle Instruktionen benötigt, dokumentieren Sie diese.
+* **Diagramm und Beschreibung der Systemarchitektur:**<br>
+  Sie zeigen eine schematische Darstellung der gesamten Systemarchitektur. Es muss ersichtlich sein, welche Systeme / Dienste
+  vorhanden sind und welche wie miteinander kommunizieren. Dazu gehört eine textuelle Beschreibung der Dienste und deren Funktionen.
+* **Beschreibung der einzelnen Dienste**:<br>
+  Beschreiben Sie die Funktion der einzelnen Dienste und deren Aufgabe im Gesamtsystem.
+* **Beschreiben der eingesetzten Container-Technologien:**<br>
+  Beschreiben Sie, welche Container welche Container-Technologien benutzt, und warum:
+  * Welche Dienste benötigen Bound Volumes, welche benötigen Docker-Volumes? Warum?
+  * Welche Dienste benötigen ein Docker-Network, und wie haben Sie dieses konfiguriert?
+  * Welche Dienste exponieren Netzwerk-Ports "gegen aussen", und warum?
+  * Wie / über welche "Kanäle" kommunizieren die Container untereinander?
+  * Wie erstellen Sie die Images der einzelnen Container?
+* **Sicherheitskonzepte:**<br>
+  Beschreiben Sie, welche Gedanken zur Sicherheit Sie sich gemacht haben: Welche Dienste / Container
+  haben Sie wie geschützt? Vor was haben Sie sie geschützt? Und wie? Es muss ersichtlich sein,
+  welche Sicherheitskonzepte Sie bedacht / umgesetzt haben.
+* **Beschreiben eines Backup-Konzeptes:**<br>
+  Wie kann von Ihrer Gesamt-Applikation ein Backup, eine Datensicherung erstellt werden? Erstellen Sie
+  ein Konzept, welches das technische Vorgehen dazu beschreibt, nach Möglichkeit im laufenden Betrieb (ohne Unterbruch).
+
 
 
 ## Bewertung
