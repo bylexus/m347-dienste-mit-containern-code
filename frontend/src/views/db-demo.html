@@ -1,0 +1,64 @@
+{% extends 'layouts/layout-master.html' %}
+{% block content%}
+<h1>Datenbank-API-Demo</h1>
+<p>Das folgende Beispiel zeigt zwei asynchrone API-Requests ans backend:
+	<ul>
+		<li>Der Inhalt des Textfeldes wird ans backend geliefert, dieses speichert den Wert in einer Datenbank</li>
+		<li>Die vorhandenen Einträge werden als API-Request geholt und dargestellt.</li>
+	</ul>
+</p>
+
+<div>
+	<form id="eingabeform" enctype="application/x-www-form-urlencoded">
+		<label>Text eingeben:</label>
+		<input type="text" name="textfeld" />
+		<button type="button" id="senden">Speichern</button>
+	</form>
+</div>
+
+<div>
+	<h2>Vorhandene Einträge</h2>
+	<div id="results">
+		... keine Resultate ...
+	</div>
+</div>
+
+<script>
+	let apiRoot = 'http://127.0.0.1:3000/api';
+	let btn = document.getElementById('senden');
+
+
+	// initial: Laden der vorhandenen Texte:
+	loadTextTable();
+
+
+	btn.addEventListener('click', async () => {
+		let form = document.getElementById('eingabeform');
+		console.log(form.textfeld.value);
+		try {
+			btn.disabled = true;
+			let result = await fetch(`${apiRoot}/save-text`, {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({
+					text: form.textfeld.value
+				})
+			});
+			if (!result.ok) {
+				throw new Error('DB Error');
+			}
+		} catch(e) {
+			// Fehlerbehandlung...
+		} finally {
+			btn.disabled = false;
+			// Texttabelle neu laden:
+			loadTextTable();
+		}
+	});
+
+	async function loadTextTable() {
+		let result = await fetch(`${apiRoot}/get-texts`);
+		document.getElementById('results').innerHTML = await result.text();
+	}
+</script>
+{% endblock %}
