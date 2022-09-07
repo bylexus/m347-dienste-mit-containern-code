@@ -11,6 +11,16 @@ module.exports = {
     port: 3000,
     // managementPort: 3001,
   },
+
+  // Mail-Config: nur benötigt, wenn eigener Mailer (nicht ethereal):
+  mailer: {
+    smtp_host: 'mailhog',
+    smtp_port: 1025,
+    secure: false,
+    smtp_user: null,
+    smtp_password: null
+  },
+
   // knex db config:
   // sqlite in-memory:
   database: {

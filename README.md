@@ -14,11 +14,12 @@ Die monolithische Applikation besteht aus:
   und eine Demo-API-Route implementiert, um:
   * eine Backend-API zu demonstrieren
   * den Datenbank-Zugriff zu demonstrieren
+* einem Mail-Dienst. Dieser kann extern sein, wir verwenden beispielhaft ethereal.email
 
 ## Bilden der statischen Webseite
 
-Der Frontend-Teil besteht dann aus der statisch gebildeten Webseite, welche der Server
-unter `monolith/site/` ausliefert. Diese muss (manuell) gebildet werden:
+Der Frontend-Teil besteht aus der statisch gebildeten Webseite, welche der Server
+unter `monolith/site/` ausliefert. Diese kann/muss (manuell) gebildet werden:
 
 Wir benutzen die Static-Site-Builder-Infrastruktur aus dem letzten Modul M293:
 Diese bildet anhand von Templates die Seite unter `monolith/src/` als

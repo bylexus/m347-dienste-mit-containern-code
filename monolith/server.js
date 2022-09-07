@@ -66,6 +66,8 @@ app.post(
     console.log(`name: ${name}`);
     console.log(`vorname: ${vorname}`);
 
+    // TODO: Hier wollen wir die Formulardaten auch in der Datenbank speichern!
+
     // Hier lösen wir das Feedback-Email aus:
     sendFeedbackEmail(name, vorname);
 
@@ -94,25 +96,6 @@ app
     res.end();
   });
 
-// Route: '/api/save-text', mit aktivierten CORS-Headern,
-// um Cross-Domain-Requests zu ermöglichen:
-app
-  .route("/api/save-text")
-  .options(cors())
-  .post(cors(), bodyParser.json(), async (req, res) => {
-    // Wir speichern hier den gelieferten Text in der Datenbank:
-    if (req.body.text) {
-      try {
-        let result = await knex("textinput").insert({
-          textinput: req.body.text,
-        });
-        res.json(result);
-      } catch (e) {
-        res.status(500).send(e.message);
-      }
-    }
-    res.end();
-  });
 
 // Route: '/api/get-texts', mit aktivierten CORS-Headern,
 // um Cross-Domain-Requests zu ermöglichen:
