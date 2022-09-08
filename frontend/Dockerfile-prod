@@ -1,0 +1,29 @@
+# Production Dockerfile for Frontend Image build:
+# Builds a Production image with the static Frontend website,
+# using a multistage build.
+
+### Stage 1: Build the static website:
+FROM node:16 AS build
+
+WORKDIR /build
+COPY config ./config
+COPY gulpfile.js ./
+COPY package.json ./
+COPY server.js ./
+COPY src ./src
+RUN mkdir site
+RUN npm install
+RUN npm run build
+
+
+### Stage 2: Create the minimal self-contained image:
+FROM node:16 AS prod
+
+WORKDIR /site
+COPY package-prod.json ./package.json
+COPY --from=build /build/server.js .
+COPY --from=build /build/config ./config
+COPY --from=build /build/site ./site
+RUN npm install
+EXPOSE 3000
+CMD node server.js
