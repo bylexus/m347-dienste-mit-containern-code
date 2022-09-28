@@ -1,103 +1,71 @@
 # Modul M347 - Dienste mit Containern
 
-Dies ist das Einstiegsprojekt für das Modul M345. Es besteht aus:
+Dies ist das Übungsprojekt für das Modul M347. Ziel ist das Aufteilen einer monolithischen Applikation
+in kleine Micro-Services mit Containern.
 
-* `mkdocs`: Einem mkdocs-Skelet für die Erstellung der Projektdokumentation
-* `monolith`: Einem Einstiegs-Projekt, als monolithische Applikation implementiert,
-	welche im Lauf des Moduls in mehrere Dienste aufgetrennt wird.
+## Aktueller Stand
 
+Dieser Repository-Stand deckt folgende Dienste ab:
 
-Die monolithische Applikation besteht aus:
+* `/frontend`: Die statische Frontend-Webseite, ausgeliefert von einem kleinen NodeJS-Server
+* `/feedback`: Der Feedback-Dienst, bedient die Route `/feedback`, und sendet das Feedback an einen Mail-Account. Umgesetzt mit einem kleinen NodeJS-Server.
+* `/monolith`: Der Rest der monolithischen Applikation (momentan: nur noch der API-Dienst).
 
-* einem static site builder, welcher die Frontend-Webseite bildet / generiert
-* einem kleinen nodejs-Webserver (expressjs), welcher die statische Site ausliefern kann 
-  und eine Demo-API-Route implementiert, um:
-  * eine Backend-API zu demonstrieren
-  * den Datenbank-Zugriff zu demonstrieren
+## Starten und Verbinden der Dienste
 
-## Bilden der statischen Webseite
+Die Dienste / Container müssen momentan noch von Hand erstellt/gestartet/verbunden werden (gewünscht). Automation / docker compose wird
+später eingeführt.
 
-Der Frontend-Teil besteht dann aus der statisch gebildeten Webseite, welche der Server
-unter `monolith/site/` ausliefert. Diese muss (manuell) gebildet werden:
+### Frontend-Dienst:
 
-Wir benutzen die Static-Site-Builder-Infrastruktur aus dem letzten Modul M293:
-Diese bildet anhand von Templates die Seite unter `monolith/src/` als
-fertig generierte HTML-Seiten nach `monolith/site/`.
+Docker-Image erstellen:
 
 ```sh
-$ cd monolith/
-$ npm install  # einmalig
-$npm run build # bildet monolith/src/ --> monolith/site/
+shell> cd frontend
+shell> docker build -t m347-frontend .
 ```
 
-Dies erstellt / kopiert die statischen Webseiten-Files nach `monolith/site`,
-wo sie vom Server (siehe unten) ausgeliefert werden können.
-
-Wenn das Docker-Image verwendet wird, kann dies folgendermassen angestosssen werden:
-
+Docker-Container erstellen, manuelles Starten der Applikation:
 
 ```sh
-# unter unix-artigen Systemen:
-$       cd monolith/
-$       docker run --rm -ti -v "$(pwd)":/app -w /app node:16 bash
+shell > docker run --name m347-frontend --hostname frontend -ti -v "$(pwd)":/server -p 3000:3000 m347-frontend bash
 docker> npm install
-docker> npm run build
-
-# unter Windows:
-$ cd monolith/
-$ docker run --rm -ti -v "%cd%":/app -w /app node:16 bash
-docker> npm install
-docker> npm run build
-
-# unter Windows mit PowerShell:
-$ cd monolith/
-$ docker run --rm -ti -v "$pwd":/app -w /app node:16 bash
-docker> npm install
-docker> npm run build
+docker> node server.js
 ```
 
+Das Frontend steht nun unter http://localhost:3000 zur Verfügung.
 
-## Starten des Monolithen
 
-Die monolithische Applikation kann mit dem `server.js`-Script gestartet werden. Es startet einen
-kleinen Webserver, basierend auf NodeJS / ExpressJS, und liefert die statischen Seiten unter `site` aus:
+### Feedback-Dienst:
+
+Docker-Image erstellen:
 
 ```sh
-$ cd monolith/
-$ npm install # einmalig
-$ node server.js
+shell> cd feedback
+shell> docker build -t m347-feedback .
 ```
 
-Oder mittels einem Docker-Image (Hier: NodeJS 16-Image vom dockerhub):
+Docker-Container erstellen, manuelles Starten der Applikation:
 
 ```sh
-# unter unix-artigen Systemen:
-$ cd monolith/
-$ docker run --rm -ti -v "$(pwd)":/app -w /app -p 3000:3000 node:16 node server.js
-
-# unter Windows:
-$ cd monolith/
-$ docker run --rm -ti -v "%cd%":/app -w /app -p 3000:3000 node:16 node server.js
-
-# unter Windows mit PowerShell:
-$ cd monolith/
-$ docker run --rm -ti -v "$pwd":/app -w /app -p 3000:3000 node:16 node server.js
+shell > docker run --name m347-feedback --hostname feedback -ti -v "$(pwd)":/server m347-feedback bash
+docker> npm install
+docker> node server.js
 ```
 
-Der Server läuft nun auf TCP Port `3000` und liefert Ihre statische Seite unter `monolith/site/` aus.
+Der Feedback-Dienst ist gestartet, aber nicht als Dienst exponiert. Ziel ist, dass das Frontend den Dienst via Docker-Network und Reverse-Proxy erreicht.
 
-## Ziel für den Ausbau
+### Docker-Network erstellen, verbinden
 
-Wir behandeln in diesem Modul Dienste mit Containern. Wir nehmen dazu Ihre Projektarbeit aus dem letzten Modul M293,
-und bauen diese statische Seite aus:
+Der Frontend-Dienst leitet Client-Anfragen intern via Reverse-Proxy an den Feedback-Dienst weiter. Dazu müssen die beiden Dienste
+mit einem Docker-Network verbunden werden:
 
-* ein Container liefert Ihre statische Seite aus (Schritt 1)
-* ein Formular-Dienst-Container nimmt Daten aus einem Feedback-Formular entgegen, und
-  * schickt diese als Email an eine Adresse (Schritt 2)
-  * speichert das Feedback in einer Datenbank (Schritt 3)
-* ihre Webseite soll Kommentaren auf den einzelnen Seiten anbieten können: dazu
-	entwickeln Sie einen weiteren Dienst als Container, welcher Kommentare pro Seite entgegennehmen / ausliefern kann
+```sh
+shell > docker network create m347
+shell > docker network connect m347 frontend
+shell > docker network connect m347 feedback
+# falls vorhanden:
+shell > docker network connect m347 monolith
+```
 
-Ziel ist, dass die jetzt monolithische Applikation in ein paar "Micro-Services" aufgetrennt wird, welche
-als Container-Dienste zusammenspielen.
-
+(c) 2022 Alexander Schenkel, BZT Frauenfeld, alexander.schenkel@bztf.ch
