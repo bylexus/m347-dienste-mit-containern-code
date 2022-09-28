@@ -4,6 +4,7 @@
   "description": "Boilerplate for generating HTML templates with nunjucks",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "build": "gulp default",
     "watch": "gulp watch",
     "test": "echo \"Error: no test specified\" && exit 1"
