@@ -17,7 +17,7 @@ const proxy = httpProxy.createProxyServer();
 const app = express();
 const port = config.server.port;
 const feedbackServer = 'http://feedback:3000'
-const backendServer = 'http://monolith:3000'
+const apiServer = 'http://api:3000'
 
 /** ------------------- URL-Routen und -Handler konfigurieren -------------------- */
 
@@ -28,11 +28,11 @@ app.all("/feedback", function(req, res) {
 });
 app.all("/api/save-text", function(req, res) {
   console.log('Reverse-Proxy für API: save-text');
-  proxy.web(req, res, {target: backendServer});
+  proxy.web(req, res, {target: apiServer});
 });
 app.all("/api/get-texts", function(req, res) {
   console.log('Reverse-Proxy für API: get-texts');
-  proxy.web(req, res, {target: backendServer});
+  proxy.web(req, res, {target: apiServer});
 });
 
 // statische (Frontend)-Site: alle Files unter site/ werden
