@@ -29,20 +29,35 @@ const config = require("./config/config.js");
 const app = express();
 const port = config.server.port;
 
-/** 
- * Datenbank konfigurieren: 
- * 
+/**
+ * Datenbank konfigurieren:
+ *
  * Siehe Konfiguration in config/config.js, Abschnitt "Database":
  */
 const knex = require("knex")({
   client: config.database.client,
   connection: config.database.connection,
+  debug: true,
   pool: {
     afterCreate: function (conn, done) {
+      // Ausführen des initialen SQL, siehe config.php: Hier wird eine erste Tabelle erstellt:
       if (config.database.initialSql) {
-        conn.exec(config.database.initialSql, (err) => {
-          done(err, done);
-        });
+        // conn ist die "rohe" DB-Verbindung, hier sqlite.
+        // Da unterschiedliche DB-Treiber unterschiedliche Methoden implementieren,
+        // fragen wir hier ab, wie das gemacht werden soll:
+        if (conn.exec) {
+          conn.exec(config.database.initialSql, (err) => {
+            done(err, conn);
+          });
+          return;
+        }
+        if (conn.query) {
+          conn.query(config.database.initialSql, (err) => {
+            done(err, conn);
+          });
+          return;
+        }
+        done(new Error("Unsupported DB"), conn);
       } else {
         done();
       }
@@ -96,7 +111,6 @@ app
     res.end();
   });
 
-
 // Route: '/api/get-texts', mit aktivierten CORS-Headern,
 // um Cross-Domain-Requests zu ermöglichen:
 // Liefert die in der Tabelle 'textinputs' gespeicherten Einträge
@@ -143,9 +157,6 @@ app.listen(port, () => {
   });
 });
 // ---------------------------------------------------------------
-
-
-
 
 // ---------------------------------------------------------------
 /**
