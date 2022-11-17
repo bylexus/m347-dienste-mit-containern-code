@@ -3,7 +3,7 @@
  *
  * Dies ist der API-Server: Er implementiert eine winzige, simple Demo-API,
  * welche Texte via GET/POST lesen / speichern kann.
- * 
+ *
  * Dieser Dienst ist der Extrakt aus der ehemals monolithischen Demo-Applikation.
  *
  * API-Routen:
@@ -26,22 +26,25 @@ const config = require("./config.js");
 const app = express();
 const port = config.server.port;
 
-/** 
- * Datenbank konfigurieren: 
- * 
+/**
+ * Datenbank konfigurieren:
+ *
  * Siehe Konfiguration in config/config.js, Abschnitt "Database":
  */
 const knex = require("knex")({
   client: config.database.client,
   connection: config.database.connection,
+  debug: true,
   pool: {
     afterCreate: function (conn, done) {
+      console.info("Connection established");
       if (config.database.initialSql) {
-        conn.exec(config.database.initialSql, (err) => {
+        conn.query(config.database.initialSql, (err) => {
           done(err, done);
         });
       } else {
-        done();
+        console.log("No SQL executed");
+        done(null, conn);
       }
     },
   },
@@ -104,4 +107,3 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 // ---------------------------------------------------------------
-

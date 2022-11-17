@@ -5,6 +5,7 @@ module.exports = {
   },
   // knex db config:
   // sqlite in-memory:
+  /** 
   database: {
     client: "sqlite3",
     connection: {
@@ -13,18 +14,18 @@ module.exports = {
     initialSql:
       "CREATE TABLE IF NOT EXISTS textinput (id INTEGER PRIMARY KEY AUTOINCREMENT,textinput TEXT)",
   },
-  /** Postgres-config:
+  */
+  /** Postgres-config: */
   database: {
     client: "pg",
     connection: {
-      host: "127.0.0.1",
+      host: "db",
       port: 5432,
-      user: "your_database_user",
-      password: "your_database_password",
-      database: "myapp_test",
+      user: "m347",
+      password: "m347",
+      database: "m347",
     },
     initialSql:
-      "CREATE TABLE IF NOT EXISTS textinput (id SERIAL PRIMARY KEY, textinput TEXT)",
+      "CREATE TABLE IF NOT EXISTS textinput (id SERIAL PRIMARY KEY, textinput TEXT);",
   },
-  */
 };
