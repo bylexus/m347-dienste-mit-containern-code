@@ -83,6 +83,10 @@ Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuli
     * **Frontend-Seiten-Auslieferung**: ein Container, der die statischen Seiten beinhaltet und ausliefert
     * **Forms/Feedback-Service**: ein Container, der die Feedback-API-Funktionalität umsetzt. Das Speichern der Kommentare in der Datenbank müssen Sie als Teil der Projektarbeit noch selber umsetzen.
     * **Kommentar-Service**: ein Container, der die Kommentar-Funktion / API umsetzt. Diese Funktionalität müssen Sie als Teil der Projektarbeit selber umsetzen.
+      **Ziel ist, dass Sie Kommentare pro Seite verwalten können**: Dazu muss Ihr Service Kommentare nach einem Identifikator ausliefern können.<br>
+      **Beispiel:**
+        - der GET-Aufruf "http://api/get-comments?id=produktseite" liefert Kommentare zu einer Produktseite
+        - ein POST-Request nach "http://api/send-comment?id=produktseite" speichert einen Kommentar zur Produktseite
 	* **Datenbank-Service**: dieser Container stellt eine PostgreSQL-Datenbank zur Verfügung. Diesen Container erstellen wir im Verlauf des Semesters. Das notwendige Datenbank-Schema dazu müssen Sie als Teil der Projektarbeit selber umsetzen
 	* **mkdocs-Container**: Dieser Container stellt die laufende `mkdocs`-Dokumentation zur Verfügung
 * Sie erstellen die notwendigen Scripte / Compose-Files, um alle Dienste
