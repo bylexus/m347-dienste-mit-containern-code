@@ -12,7 +12,7 @@ COPY package.json ./
 COPY server.js ./
 COPY src ./src
 RUN mkdir site
-RUN npm install
+RUN npm install --development
 RUN npm run build
 
 
@@ -20,10 +20,10 @@ RUN npm run build
 FROM node:16 AS prod
 
 WORKDIR /site
-COPY package-prod.json ./package.json
+COPY package.json ./package.json
 COPY --from=build /build/server.js .
 COPY --from=build /build/config ./config
 COPY --from=build /build/site ./site
-RUN npm install
+RUN npm install --production
 EXPOSE 3000
 CMD node server.js

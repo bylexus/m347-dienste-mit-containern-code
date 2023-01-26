@@ -1,22 +1,13 @@
 {
-  "name": "nunjucks-templating-starter",
+  "name": "frontend",
   "version": "1.0.0",
-  "description": "Boilerplate for generating HTML templates with nunjucks",
+  "description": "M347 Frontend-Application as micro-service",
   "main": "index.js",
   "scripts": {
     "build": "gulp default",
     "watch": "gulp watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": [
-    "nunjucks",
-    "starter",
-    "npm",
-    "templating",
-    "html",
-    "sass"
-  ],
-  "author": "Chidi Williams",
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^2.27.5",
