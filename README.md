@@ -1,5 +1,7 @@
 # Modul M347 - Dienste mit Containern
 
+Hello, git
+
 Dies ist das Einstiegsprojekt für das Modul M345. Es besteht aus:
 
 * `mkdocs`: Einem mkdocs-Skelet für die Erstellung der Projektdokumentation
