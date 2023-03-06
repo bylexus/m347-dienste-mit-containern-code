@@ -36,7 +36,6 @@ app.all("/api/get-texts", function(req, res) {
 
 // statische (Frontend)-Site: alle Files unter site/ werden
 // als statische Dateien ausgeliefert:
-// Diesen Teil wollen wir später vom Backend-Server lösen:
 app.use(express.static("site"));
 
 // ---------------------------------------------------------------
