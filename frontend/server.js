@@ -25,7 +25,6 @@ const proxy = httpProxy.createProxyServer();
 app.all("/feedback", function(req, res) {
   console.log('Reverse-Proxy für Feedback-Form');
   proxy.web(req, res, {target: feedbackServer});
-  proxy.web(req, res, {target: feedbackServer});
 });
 
 /*

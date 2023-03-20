@@ -43,7 +43,7 @@ docker build -t m347-feedback .
 Nun erzeugen wir den Feedback-Container:
 
 ```sh
-docker run --name -ti m347-feedback -v "$(pwd)":/server m347-feedback bash
+docker run --name m347-feedback -ti -v "$(pwd)":/server m347-feedback bash
 ```
 
 ... und starten unseren Feeback-Server:
