@@ -88,3 +88,31 @@ Netzwerk verbinden:
 ```sh
 docker network connect m347 m347-api
 ```
+
+## DB-Container
+
+Image bauen:
+
+```sh
+cd db/
+docker build -t m347-db .
+```
+
+Persistentes Volume erzeugen:
+
+```sh
+cd db/
+docker volume create m347-db
+```
+
+Container erstellen, starten:
+
+```sh
+docker run -d --name m347-db -v m347-db:/var/lib/postgresql/data -e POSTGRES_PASSWORD=m347 --net m347 -p 2345:5432 m347-db
+```
+
+PG-Admin:
+
+```sh
+docker run --name m347-pgadmin -p 9999:80 -e 'PGADMIN_DEFAULT_EMAIL=m347@bztf.ch' -e 'PGADMIN_DEFAULT_PASSWORD=m347' --net m347 -d dpage/pgadmin4
+```

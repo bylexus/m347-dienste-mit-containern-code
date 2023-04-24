@@ -2,6 +2,14 @@ FROM postgres:15
 
 COPY init-db.sql /docker-entrypoint-initdb.d/init-db.sql
 
+
+# Ziel:
+# - laufenden Container bauen
+# - mit persistent volume: /var/lib/postgresql/data (im container)
+# - im m347-Docker-Netzwerk integriert
+
+
+### docker build -t m347-db .
 ### docker run command to start this image:
 ### docker volume create m347-db
 ### docker run -d --name m347-db --hostname db -v m347-db:/var/lib/postgresql/data -e POSTGRES_PASSWORD=m347 -p 2345:5432 m347-db
