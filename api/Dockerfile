@@ -2,4 +2,4 @@ FROM node:16
 
 WORKDIR /server
 
-CMD node server.js
+CMD npm install && node server.js
