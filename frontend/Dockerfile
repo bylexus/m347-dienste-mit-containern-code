@@ -1,4 +1,4 @@
 FROM node:16
 
 WORKDIR /server
-CMD node server.js
+CMD npm install && npm run build && node server.js
