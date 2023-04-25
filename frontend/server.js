@@ -14,8 +14,8 @@ const config = require("./config/config.js");
 
 const app = express();
 const port = config.server.port;
-const feedbackServer = 'http://m347-feedback:3000'
-const apiServer = 'http://m347-api:3000'
+const feedbackServer = 'http://feedback:3000'
+const apiServer = 'http://api:3000'
 
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer();
