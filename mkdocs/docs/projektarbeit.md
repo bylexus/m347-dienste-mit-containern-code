@@ -11,12 +11,13 @@ Sie am Schluss als "Gesamtpaket" als Projektarbeit abliefern.
 
 Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: Ziel ist, dass Sie Ihre Webseite folgendermassen ausbauen:
 
-* Ihre Webseite wird aus **Templates (HTML, SCSS) als statische Webseite gebildet**
-* Ihre Webseite wird von einem **"richtigen" Webserver ausgeliefert**
+* Ihre Webseite wird aus **Templates als statische Webseite gebildet**
+* Ihre Webseite wird von einem **Frontend-Webservice** ausgeliefert
 * Ihre Webseite beinhaltet ein **Feedback-Formular**. Diese Feedbacks werden per **Mail** an eine Mailbox versandt, und
   **in einer Datenbank** gespeichert.
 * Ihre Webseite kann **Kommentare pro Detailseite** (z.B. Rückmeldung zu einem bestimmten Produkt) erfassen und anzeigen.
   Diese Kommentare werden pro Detailseite in einer Datenbank festgehalten und wieder an der korrekten Stelle (Seite) ausgeliefert.
+* Die einzelnen Dienste sollen als **Container-Dienste** umgesetzt und miteinander verknüpft werden.
 * Sie **dokumentieren** die Gesamt-Architektur in einer `mkdocs`-Dokumentationsseite.
 
 Wir erarbeiten dazu gemeinsam die notwendigen Kenntnisse, während dem Sie die finale Funktionalität dann selber
@@ -92,6 +93,7 @@ Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuli
 * Sie erstellen die notwendigen Scripte / Compose-Files, um alle Dienste
 	miteinander zu starten / zu koordinieren
 * Sie liefern den gesamten Code inkl. dazu notwendiger Docker- und Compose-File und Dokumentation im **Classroom-Git-Repository** ab.
+* Sie dokumentieren ein "**Sicherheits- und Backup-Konzept**", siehe unten
 * Sie dokumentieren die Architektur und die einzelnen Dienste in der `mkdocs`-Dokumentation, welche ebenfalls Teil des Respository ist.
 
 
@@ -145,7 +147,8 @@ Ich erwarte eine Dokumentation in Form eines `mkdocs`-Markdown-Containers. Die D
   * Wie erstellen Sie die Images der einzelnen Container?
 * **Sicherheitskonzepte:**<br>
   Beschreiben Sie, welche Gedanken zur Sicherheit Sie sich gemacht haben: Welche Dienste / Container
-  haben Sie wie geschützt? Vor was haben Sie sie geschützt? Und wie? Es muss ersichtlich sein,
+  haben Sie wie geschützt? Vor was haben Sie sie geschützt? Und wie? Wie gehen Sie mit sensiblen und/oder system-abhängigen
+  Konfigurationsdaten (z.B. Datenbank-Config) um?<br>Es muss ersichtlich sein,
   welche Sicherheitskonzepte Sie bedacht / umgesetzt haben.
 * **Beschreiben eines Backup-Konzeptes:**<br>
   Wie kann von Ihrer Gesamt-Applikation ein Backup, eine Datensicherung erstellt werden? Erstellen Sie
