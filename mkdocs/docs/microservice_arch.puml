@@ -1,10 +1,10 @@
-
-@startuml
+@startuml microservice_arch
 title Ziel-Architektur als Microservices
 
 [Client - Browser] as client
 node "Microservices" {
 	package "statische Seiten-Service" as static_site {
+		[API-Proxy] as proxy
 		[gebildete Seiten] as build_site
 		[Site-Builder] as site_builder
 	}
@@ -16,10 +16,10 @@ node "Microservices" {
 
 [Email-Dienst (extern)] as email
 
-client ..> build_site: Ruft auf
+client ..> static_site: Ruft auf
 client ..> doc: Ruft auf
-client ..> form_backend: Ruft auf
-client ..> comment_backend: Ruft auf
+proxy ..> form_backend: Ruft auf
+proxy ..> comment_backend: Ruft auf
 form_backend ..> email: sendet
 form_backend ..> db: speichert
 comment_backend ..> db: speichert, liest

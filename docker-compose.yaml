@@ -18,17 +18,3 @@ services:
     # optional: falls CMD im Dockerfile nicht definiert ist,
     # definieren wir hier, was beim Start ausgeführt werden soll:
     # command: sh -c "npm install && npm run build && node server.js"
-
-  frontend:
-    # das Docker-Image soll ab dem lokalen Folder frontend/ gebuildet werden:
-    # dort befindet sich das Dockerfile:
-    build: frontend/
-    # wir mappen den Host-Port 8020 auf den Container-Port 3000:
-    ports:
-      - "8020:3000"
-    # Wir hängen den frontend-Folder als Volume ein:
-    volumes:
-      - ./frontend:/server
-    # optional: falls CMD im Dockerfile nicht definiert ist,
-    # definieren wir hier, was beim Start ausgeführt werden soll:
-    # command: sh -c "npm install && npm run build && node server.js"

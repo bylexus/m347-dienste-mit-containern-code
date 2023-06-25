@@ -11,12 +11,13 @@ Sie am Schluss als "Gesamtpaket" als Projektarbeit abliefern.
 
 Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: Ziel ist, dass Sie Ihre Webseite folgendermassen ausbauen:
 
-* Ihre Webseite wird aus **Templates (HTML, SCSS) als statische Webseite gebildet**
-* Ihre Webseite wird von einem **"richtigen" Webserver ausgeliefert**
+* Ihre Webseite wird aus **Templates als statische Webseite gebildet**
+* Ihre Webseite wird von einem **Frontend-Webservice** ausgeliefert
 * Ihre Webseite beinhaltet ein **Feedback-Formular**. Diese Feedbacks werden per **Mail** an eine Mailbox versandt, und
   **in einer Datenbank** gespeichert.
 * Ihre Webseite kann **Kommentare pro Detailseite** (z.B. Rückmeldung zu einem bestimmten Produkt) erfassen und anzeigen.
-  Diese Kommentare werden pro Detailseite in einer Datenbank festgehalten und ausgeliefert
+  Diese Kommentare werden pro Detailseite in einer Datenbank festgehalten und wieder an der korrekten Stelle (Seite) ausgeliefert.
+* Die einzelnen Dienste sollen als **Container-Dienste** umgesetzt und miteinander verknüpft werden.
 * Sie **dokumentieren** die Gesamt-Architektur in einer `mkdocs`-Dokumentationsseite.
 
 Wir erarbeiten dazu gemeinsam die notwendigen Kenntnisse, während dem Sie die finale Funktionalität dann selber
@@ -81,13 +82,18 @@ Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuli
 
 * Sie erstellen die verschiedenen Container-Dienste wie oben gezeigt:
     * **Frontend-Seiten-Auslieferung**: ein Container, der die statischen Seiten beinhaltet und ausliefert
-    * **Forms-Service**: ein Container, der die Feedback-Form-Funktionalität umsetzt. Das Speichern der Kommentare in der Datenbank müssen Sie als Teil der Projektarbeit noch selber umsetzen.
+    * **Forms/Feedback-Service**: ein Container, der die Feedback-API-Funktionalität umsetzt. Das Speichern der Kommentare in der Datenbank müssen Sie als Teil der Projektarbeit noch selber umsetzen.
     * **Kommentar-Service**: ein Container, der die Kommentar-Funktion / API umsetzt. Diese Funktionalität müssen Sie als Teil der Projektarbeit selber umsetzen.
+      **Ziel ist, dass Sie Kommentare pro Seite verwalten können**: Dazu muss Ihr Service Kommentare nach einem Identifikator ausliefern können.<br>
+      **Beispiel:**
+        - der GET-Aufruf "http://api/get-comments?id=produktseite" liefert Kommentare zu einer Produktseite
+        - ein POST-Request nach "http://api/send-comment?id=produktseite" speichert einen Kommentar zur Produktseite
 	* **Datenbank-Service**: dieser Container stellt eine PostgreSQL-Datenbank zur Verfügung. Diesen Container erstellen wir im Verlauf des Semesters. Das notwendige Datenbank-Schema dazu müssen Sie als Teil der Projektarbeit selber umsetzen
 	* **mkdocs-Container**: Dieser Container stellt die laufende `mkdocs`-Dokumentation zur Verfügung
 * Sie erstellen die notwendigen Scripte / Compose-Files, um alle Dienste
 	miteinander zu starten / zu koordinieren
 * Sie liefern den gesamten Code inkl. dazu notwendiger Docker- und Compose-File und Dokumentation im **Classroom-Git-Repository** ab.
+* Sie dokumentieren ein "**Sicherheits- und Backup-Konzept**", siehe unten
 * Sie dokumentieren die Architektur und die einzelnen Dienste in der `mkdocs`-Dokumentation, welche ebenfalls Teil des Respository ist.
 
 
@@ -141,7 +147,8 @@ Ich erwarte eine Dokumentation in Form eines `mkdocs`-Markdown-Containers. Die D
   * Wie erstellen Sie die Images der einzelnen Container?
 * **Sicherheitskonzepte:**<br>
   Beschreiben Sie, welche Gedanken zur Sicherheit Sie sich gemacht haben: Welche Dienste / Container
-  haben Sie wie geschützt? Vor was haben Sie sie geschützt? Und wie? Es muss ersichtlich sein,
+  haben Sie wie geschützt? Vor was haben Sie sie geschützt? Und wie? Wie gehen Sie mit sensiblen und/oder system-abhängigen
+  Konfigurationsdaten (z.B. Datenbank-Config) um?<br>Es muss ersichtlich sein,
   welche Sicherheitskonzepte Sie bedacht / umgesetzt haben.
 * **Beschreiben eines Backup-Konzeptes:**<br>
   Wie kann von Ihrer Gesamt-Applikation ein Backup, eine Datensicherung erstellt werden? Erstellen Sie
@@ -155,4 +162,4 @@ Ich erwarte eine Dokumentation in Form eines `mkdocs`-Markdown-Containers. Die D
 
 (siehe https://gitlab.com/ict-modulformation-ch/module/m347/lbv-m-347-1)
 
-(TODO - folgt noch)
+Die Bewertung erfolgt mittels separatem Bewertungsblatt, welches via Moodle abgegeben wird / ersichtlich ist.
