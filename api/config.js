@@ -21,9 +21,9 @@ module.exports = {
     connection: {
       host: "db",
       port: 5432,
-      user: "m347",
-      password: "m347",
-      database: "m347",
+      user: process.env.DB_USER,
+      password: process.env.DB_PW,
+      database: process.env.DB,
     },
     initialSql:
       "CREATE TABLE IF NOT EXISTS textinput (id SERIAL PRIMARY KEY, textinput TEXT);",

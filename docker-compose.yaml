@@ -12,9 +12,110 @@ services:
     # wir mappen den Host-Port 8020 auf den Container-Port 3000:
     ports:
       - "8020:3000"
-    # Wir hängen den frontend-Folder als Volume ein:
-    volumes:
-      - ./frontend:/server
     # optional: falls CMD im Dockerfile nicht definiert ist,
     # definieren wir hier, was beim Start ausgeführt werden soll:
-    # command: sh -c "npm install && npm run build && node server.js"
+    # command: sh -c "npm install && node server.js"
+    depends_on:
+      - api
+      - feedback
+      - db
+
+  api:
+    build: api/
+    # Wir hängen den api-Folder als Volume ein:
+    volumes:
+      - ./api:/server
+    # optional: falls CMD im Dockerfile nicht definiert ist,
+    # definieren wir hier, was beim Start ausgeführt werden soll:
+    # command: node server.js
+    depends_on:
+      - db
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PW=${DB_PW}
+      - DB=${DB}
+
+  feedback:
+    build: feedback/
+    # Wir hängen den feedback-Folder als Volume ein:
+    volumes:
+      - ./feedback:/server
+    # optional: falls CMD im Dockerfile nicht definiert ist,
+    # definieren wir hier, was beim Start ausgeführt werden soll:
+    # command: node server.js
+
+  db:
+    build: db/
+    # Wir definieren ein docker-Volume (siehe unten) für persistente Postres-Daten:
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+
+  # Optional: pgadmin-Service:
+  pgadmin:
+    image: dpage/pgadmin4
+    # Wir definieren ein docker-Volume (siehe unten) für persistente pgadmin-Daten:
+    volumes:
+      - pgadmindata:/var/lib/pgadmin
+    ports:
+      - 9999:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=m347@bztf.ch
+      - PGADMIN_DEFAULT_PASSWORD=m347
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  doc:
+    build: mkdocs/
+    volumes:
+      - ./mkdocs:/docs
+    ports:
+      - "10000:8000"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# interne Docker-Volumes für die Persistierung:
+volumes:
+  dbdata: {}
+  pgadmindata: {}
