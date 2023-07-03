@@ -1,11 +1,4 @@
 module.exports = {
-  paths: {
-    public_dir: "site",
-    src_dir: "src",
-    views_dir: "src/views",
-    vendor_dir: "src/resources/vendor",
-    resources_dir: "src/resources",
-  },
   // ExpressJS server.js configuration:
   server: {
     port: 3000,
@@ -14,11 +7,11 @@ module.exports = {
 
   // Mail-Config: nur benötigt, wenn eigener Mailer (nicht ethereal):
   mailer: {
-    smtp_host: 'mailhog',
+    smtp_host: "mailhog",
     smtp_port: 1025,
     secure: false,
     smtp_user: null,
-    smtp_password: null
+    smtp_password: null,
   },
 
   // knex db config:
@@ -45,25 +38,4 @@ module.exports = {
       "CREATE TABLE IF NOT EXISTS textinput (id SERIAL PRIMARY KEY, textinput TEXT)",
   },
   */
-  njk: {
-    // Add custom variables to be inserted into the HTML templates
-    templateVars: {
-      testing: "Test Variable.",
-      now: new Date(),
-    },
-  },
-  sass: {
-    // Determines the style of the final CSS files
-    // Values: ['nested', 'expanded', 'compact', 'compressed']
-    outputStyle: "nested",
-  },
-  js: {
-    // Determines if the final JS files would be compressed
-    // Values: [true, false]
-    doCompress: false,
-    // Determines if the .js source file would be included after compression
-    // doCompress must be true
-    // Values: [true, false]
-    doKeepSource: false,
-  },
 };

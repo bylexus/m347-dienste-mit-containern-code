@@ -1,5 +1,9 @@
-{% extends 'layouts/layout-master.html' %}
-{% block content%}
+---
+layout: layout-master.njk
+title: DB-API-Demo
+rel_prefix: ..
+---
+
 <h1>Datenbank-API-Demo</h1>
 <p>Das folgende Beispiel zeigt zwei asynchrone API-Requests ans backend:
 	<ul>
@@ -24,7 +28,7 @@
 </div>
 
 <script>
-	let apiRoot = 'http://127.0.0.1:3000/api';
+	let apiRoot = '/api';
 	let btn = document.getElementById('senden');
 
 
@@ -61,4 +65,3 @@
 		document.getElementById('results').innerHTML = await result.text();
 	}
 </script>
-{% endblock %}

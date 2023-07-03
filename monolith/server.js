@@ -24,7 +24,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
-const config = require("./config/config.js");
+const config = require("./config.js");
 
 const app = express();
 const port = config.server.port;
@@ -87,7 +87,7 @@ app.post(
     sendFeedbackEmail(name, vorname);
 
     // ... und leiten den Browser zu einer Dankes-Seite um:
-    res.redirect("/thankyou.html");
+    res.redirect("/thankyou/");
   }
 );
 

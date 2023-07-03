@@ -1,5 +1,8 @@
-{% extends 'layouts/layout-master.html' %}
-{% block content%}
+---
+layout: layout-master.njk
+title: Demo - Home
+rel_prefix: .
+---
 <h1>Hello, World!</h1>
 
 <p>Dies ist eine Demo-Seite. Hier sollte IHRE Webseite stehen!</p>
@@ -9,9 +12,8 @@
 <ul>
 	<li>eine (statische) Webseite, bestehend aus ein paar HTML-Seiten</li>
 	<li>einem Webserver, bestehend aus einer kleinen NodeJS-Applikation, um die Seiten auszuliefern</li>
-	<li>einem einfachen <a href="./formular.html">Formular</a>, um Senden von Form-POSTs zu demonstrieren</li>
-	<li>einem einfachen <a href="./db-demo.html">Datenbank-Demo</a>, um die Verbindung von/zu einem Datenbank-Dienst zu demonstrieren</li>
+	<li>einem einfachen <a href="./formular/">Formular</a>, um Senden von Form-POSTs zu demonstrieren</li>
+	<li>einem einfachen <a href="./db-demo/">Datenbank-Demo</a>, um die Verbindung von/zu einem Datenbank-Dienst zu demonstrieren</li>
 </ul>
 
 <p><strong>Diese Seite ist durch Ihre eigene Seite aus dem Modul M293 zu ersetzen!</strong></p>
-{% endblock %}

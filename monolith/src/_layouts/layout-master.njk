@@ -1,0 +1,33 @@
+---
+title: Demo
+rel_prefix: .
+---
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>{{ title }}</title>
+    <link rel="stylesheet" href="{{rel_prefix}}/css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+		<ul>
+			<li><a href="{{rel_prefix}}/">Home</a></li>
+			<li><a href="{{rel_prefix}}/formular/">Form-Demo</a></li>
+			<li><a href="{{rel_prefix}}/db-demo/">DB-Demo</a></li>
+		</ul>
+	  </nav>
+    </header>
+
+    <main>
+		{{content | safe }}
+	</main>
+
+	<footer>
+		Modul M347 - Dienste mit Containern
+	</footer>
+  </body>
+</html>
