@@ -9,7 +9,7 @@ Dies ist das Einstiegsprojekt für das Modul M345. Es besteht aus:
 
 Die monolithische Applikation besteht aus:
 
-* einem static site builder, welcher die Frontend-Webseite bildet / generiert
+* einem static site builder [11ty](https://www.11ty.dev/), welcher die Frontend-Webseite bildet / generiert
 * einem kleinen nodejs-Webserver (expressjs), welcher die statische Site ausliefern kann 
   und eine Demo-API-Route implementiert, um:
   * eine Backend-API zu demonstrieren
@@ -35,13 +35,13 @@ $npm run build # bildet monolith/src/ --> monolith/site/
 Dies erstellt / kopiert die statischen Webseiten-Files nach `monolith/site`,
 wo sie vom Server (siehe unten) ausgeliefert werden können.
 
-Wenn das Docker-Image verwendet wird, kann dies folgendermassen angestosssen werden:
+Wenn das Docker-Image verwendet wird, kann dies folgendermassen angestossen werden:
 
 
 ```sh
 # unter unix-artigen Systemen:
-$       cd monolith/
-$       docker run --rm -ti -v "$(pwd)":/app -w /app node:18 bash
+$ cd monolith/
+$ docker run --rm -ti -v "$(pwd)":/app -w /app node:18 bash
 docker> npm install
 docker> npm run build
 
@@ -87,6 +87,29 @@ $ docker run --rm -ti -v "$pwd":/app -w /app -p 3000:3000 node:18 node server.js
 ```
 
 Der Server läuft nun auf TCP Port `3000` und liefert Ihre statische Seite unter `monolith/site/` aus.
+
+## Starten / Nutzen der mkdocs-Dokumentation
+
+Im Verlauf des Semesters wird mittels [mkdocs](https://www.mkdocs.org/) eine Dokumentation erstellt. Ziel ist, die
+Doku auch als eigenen Dienst / Container zu bauen.
+
+Ein minimalistisches Dockerfile dazu sieht folgendermassen aus:
+
+```Dockerfile
+FROM debian:bookworm-slim
+WORKDIR /docs
+RUN apt-get update && apt-get install -y python3 python3-pip mkdocs
+CMD mkdocs serve --dev-addr 0.0.0.0:8000
+```
+
+Gestartet wird der Container dann so:
+
+```sh
+$ docker build -t m293-mkdocs /pfad/zum/Ordner/Des/Dockerfile/
+$ docker run --rm -ti -v /pfad/zum/mkdocs/folder:/docs -p 8000:8000 m293-mkdocs
+```
+
+Dies wir dim Laufe des Semesters eingeführt.
 
 ## Ziel für den Ausbau
 

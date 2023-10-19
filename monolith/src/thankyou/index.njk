@@ -6,4 +6,14 @@ rel_prefix: ..
 
 <h1>Vielen Dank!</h1>
 <p>Ihr Feedback ist angekommen.</p>
+<p><a id="previewUrl" href="">Vorschau-URL</a>
 
+<script>
+	// extrahieren der preview-URL aus der URL:
+	// Schema: /thankyou?preview=url
+	let match = document.location.search.match(/preview=([^&]+)/)
+	if (match && match.length >= 2) {
+		let url = match[1];
+		document.getElementById('previewUrl').href = url;
+	}
+</script>

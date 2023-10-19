@@ -11,7 +11,7 @@ Sie am Schluss als "Gesamtpaket" als Projektarbeit abliefern.
 
 Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: Ziel ist, dass Sie Ihre Webseite folgendermassen ausbauen:
 
-* Ihre Webseite wird aus **Templates als statische Webseite gebildet**
+* Ihre Webseite wird aus **Templates (11ty) als statische Webseite gebildet**
 * Ihre Webseite wird von einem **Frontend-Webservice** ausgeliefert
 * Ihre Webseite beinhaltet ein **Feedback-Formular**. Diese Feedbacks werden per **Mail** an eine Mailbox versandt, und
   **in einer Datenbank** gespeichert.
@@ -40,8 +40,7 @@ kleine Beispiel-Applikation mit folgenden Komponenten:
 	* Einen API-Endpunkt für die **Erfassung** von Daten: `/api/save-text`: Dieser dient dem Demonstrieren eines Backend-Dienstes, um Daten in einer Datenbank zu speichern
 	* Einen API-Endpunkt für die **Auslieferung** von Daten: `/api/get-texts`: Dieser dient dem Demonstrieren eines Backend-Dienstes, um Daten von einer Datenbank zu lesen
 
-Ihre statischen Seiten erzeugen Sie mittels der aus M293 bekannten
-**statischen Site-Generator**-Architektur.
+Ihre statischen Seiten erzeugen Sie mittels der aus M293 bekannten **statischen Site-Generator**-Architektur.
 
 Dieser Server ist **monolithisch** umgesetzt, er implementiert also alle Funktionalitäten selber als einzige, grosse Applikation.
 
@@ -52,7 +51,6 @@ Daneben steht diese `mkdocs`-Seite als separate Applikation zur Verfügung.
 ## Ziel-Architektur
 
 Diese monolithische Architektur überführen Sie im Verlauf des Projektes in einzelne **Micro-Services**:
-
 
 <img src="/microservice_arch.svg" width="800">
 
@@ -73,8 +71,7 @@ verpackte Apps aufgetrennt werden:
 * die **Dokumentation** steht weiterhin als Teil dieser Architektur zur Verfügung
 
 Wir werden im Laufe des Semester die notwendigen Handwerkzeuge kennen lernen.
-**Es obliegt aber in Ihrer Verantwortung, die bestehende Applikation soweit 
-auszubauen / zu ergänzen, damit die geforderte Funktionalität abgebildet werden kann!**
+**Es obliegt aber in Ihrer Verantwortung, die bestehende Applikation soweit auszubauen / zu ergänzen, damit die geforderte Funktionalität abgebildet werden kann!**
 
 ## Ihre Aufgabe
 
@@ -93,15 +90,13 @@ Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuli
 * Sie erstellen die notwendigen Scripte / Compose-Files, um alle Dienste
 	miteinander zu starten / zu koordinieren
 * Sie liefern den gesamten Code inkl. dazu notwendiger Docker- und Compose-File und Dokumentation im **Classroom-Git-Repository** ab.
-* Sie dokumentieren ein "**Sicherheits- und Backup-Konzept**", siehe unten
-* Sie dokumentieren die Architektur und die einzelnen Dienste in der `mkdocs`-Dokumentation, welche ebenfalls Teil des Respository ist.
-
+* Sie **dokumentieren** die Architektur und die einzelnen Dienste in der `mkdocs`-Dokumentation, welche ebenfalls Teil des Repositories ist.
 
 ## Abgabe
 
 Sie geben den **gesamten Code inkl. Dokumentation, Konfiguration und Datenbank-Scripte** via gihub classroom-Repository ab. Ihr git-Repository sollte beinhalten:
 
-* Die Dokumentation als `mkdocs`-Dokumentation
+* Die Dokumentation als `mkdocs`-Dokumentation (siehe unten)
 * Alle Scripte, Dateien und Konfigurationen, um alle Container-Dienste
   zu bauen resp. zu starten:
   * Frontend-Container mit der statischen Webseite, welche den Forms-Service
@@ -125,7 +120,7 @@ docker compose up
 Danach müssen die Dienste alle gebaut sein und laufen, inkl. der notwendigen
 Port-Weiterleitungen.
 
-**Sollten Sie für den Setup spezielle Instruktionen liefern wollen, erwarte ich ein README.md-File im obersten Verzeichnis des Repository!**
+**Sollten Sie für den Setup spezielle Instruktionen liefern wollen, erwarte ich ein README.md-File im obersten Verzeichnis des Repositories!**
 
 ### Dokumentation
 
@@ -133,9 +128,10 @@ Ich erwarte eine Dokumentation in Form eines `mkdocs`-Markdown-Containers. Die D
 
 * **Bedienungshinweise:**<br>
   Falls Ihre Applikation zum Erstellen / Builden / Starten spezielle Instruktionen benötigt, dokumentieren Sie diese.
+  Dokumentieren Sie die einzelnen Kommandos, welche zum Starten der Applikation notwendig sind.
 * **Diagramm und Beschreibung der Systemarchitektur:**<br>
   Sie zeigen eine schematische Darstellung der gesamten Systemarchitektur. Es muss ersichtlich sein, welche Systeme / Dienste
-  vorhanden sind und welche wie miteinander kommunizieren. Dazu gehört eine textuelle Beschreibung der Dienste und deren Funktionen.
+  vorhanden sind und welche wie miteinander kommunizieren. **Dazu gehört eine textuelle Beschreibung der Dienste und deren Funktionen.**
 * **Beschreibung der einzelnen Dienste**:<br>
   Beschreiben Sie die Funktion der einzelnen Dienste und deren Aufgabe im Gesamtsystem.
 * **Beschreiben der eingesetzten Container-Technologien:**<br>
@@ -145,16 +141,11 @@ Ich erwarte eine Dokumentation in Form eines `mkdocs`-Markdown-Containers. Die D
   * Welche Dienste exponieren Netzwerk-Ports "gegen aussen", und warum?
   * Wie / über welche "Kanäle" kommunizieren die Container untereinander?
   * Wie erstellen Sie die Images der einzelnen Container?
-* **Sicherheitskonzepte:**<br>
-  Beschreiben Sie, welche Gedanken zur Sicherheit Sie sich gemacht haben: Welche Dienste / Container
-  haben Sie wie geschützt? Vor was haben Sie sie geschützt? Und wie? Wie gehen Sie mit sensiblen und/oder system-abhängigen
-  Konfigurationsdaten (z.B. Datenbank-Config) um?<br>Es muss ersichtlich sein,
-  welche Sicherheitskonzepte Sie bedacht / umgesetzt haben.
-* **Beschreiben eines Backup-Konzeptes:**<br>
-  Wie kann von Ihrer Gesamt-Applikation ein Backup, eine Datensicherung erstellt werden? Erstellen Sie
-  ein Konzept, welches das technische Vorgehen dazu beschreibt, nach Möglichkeit im laufenden Betrieb (ohne Unterbruch).
-
-
+* **Dokumentation der verwendeten Docker-Kommandos**<br>
+  Während des Semesters und im Laufe der Projektarbeit haben Sie ganz viele Docker- und Docker-Compose-Kommandos kennengelernt. Picken Sie sich **mindestens 3** davon aus, und **dokumentieren Sie die gelernten/im Projekt verwendeten Kommandos (z.B. `docker run`)**:
+  * Name des Kommandos
+  * Beschreibung: Was macht es, wann / wo wird es benötigt?
+  * ein (vollständiges) Beispiel des Kommandos
 
 ## Bewertung
 

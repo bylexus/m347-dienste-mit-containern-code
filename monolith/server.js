@@ -25,6 +25,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const config = require("./config.js");
+const staticSiteFolder = "site";
 
 const app = express();
 const port = config.server.port;
@@ -74,7 +75,7 @@ app.post(
   // die body-parser-Middleware erlaubt das Auslesen von
   // Formulardaten, hier in der urlencoded-Form:
   bodyParser.urlencoded({ extended: false }),
-  (req, res) => {
+  async (req, res) => {
     // Wir verarbeiten die Form-Daten:
     let name = req.body.name;
     let vorname = req.body.vorname;
@@ -84,10 +85,14 @@ app.post(
     // TODO: Hier wollen wir die Formulardaten auch in der Datenbank speichern!
 
     // Hier lösen wir das Feedback-Email aus:
-    sendFeedbackEmail(name, vorname);
-
-    // ... und leiten den Browser zu einer Dankes-Seite um:
-    res.redirect("/thankyou/");
+    try {
+      let previewUrl = await sendFeedbackEmail(name, vorname);
+      // ... und leiten den Browser zu einer Dankes-Seite um:
+      res.redirect("/thankyou/?preview=" + previewUrl);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(String(err));
+    }
   }
 );
 
@@ -143,7 +148,7 @@ app.route("/api/get-texts").get(cors(), async (req, res) => {
 // statische (Frontend)-Site: alle Files unter site/ werden
 // als statische Dateien ausgeliefert:
 // Diesen Teil wollen wir später vom Backend-Server lösen:
-app.use(express.static("site"));
+app.use(express.static(staticSiteFolder));
 
 // ---------------------------------------------------------------
 // Starten des Servers und Konfigurieren unseres Email-Demos:
@@ -194,25 +199,31 @@ function setupEmail() {
 
 /**
  * Sendet die Feedback-Daten per Mail an den vorkonfigurierten Mail-Transport
+ *
+ * Als Rückgabewert wird in einer Promise die Preview-URL des Mailers zurückgegeben, falls vorhanden.
  */
 function sendFeedbackEmail(name, vorname) {
-  // Message object
-  let message = {
-    from: "Sender Name <sender@example.com>",
-    to: "Recipient <recipient@example.com>",
-    subject: "Feedback-Formular",
-    text: `Feedback von ${name}, ${vorname} erhalten.`,
-    html: `<p>Feedback von <b>${name}, ${vorname}</b> erhalten.</p>`,
-  };
+  return new Promise((resolve, reject) => {
+    // Message object
+    let message = {
+      from: "Sender Name <sender@example.com>",
+      to: "Recipient <recipient@example.com>",
+      subject: "Feedback-Formular",
+      text: `Feedback von ${name}, ${vorname} erhalten.`,
+      html: `<p>Feedback von <b>${name}, ${vorname}</b> erhalten.</p>`,
+    };
 
-  emailTransport.sendMail(message, (err, info) => {
-    if (err) {
-      console.log("Error occurred. " + err.message);
-      return process.exit(1);
-    }
-
-    console.log("Message sent: %s", info.messageId);
-    // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    emailTransport.sendMail(message, (err, info) => {
+      if (err) {
+        console.log("Error occurred. " + err.message);
+        return reject(err);
+      } else {
+        console.log("Message sent: %s", info.messageId);
+        // Preview only available when sending through an Ethereal account
+        let url = nodemailer.getTestMessageUrl(info);
+        console.log("Preview URL: %s", url);
+        resolve(url);
+      }
+    });
   });
 }

@@ -15,6 +15,10 @@ module.exports = {
   },
 
   // knex db config:
+  // Hier werden 2 Varianten zur Verfügung gestellt:
+  // - sqlite in-memory (Abgabe Starter-Projekt)
+  // - Postgres-Config für später.
+  //
   // sqlite in-memory:
   database: {
     client: "sqlite3",
@@ -24,7 +28,9 @@ module.exports = {
     initialSql:
       "CREATE TABLE IF NOT EXISTS textinput (id INTEGER PRIMARY KEY AUTOINCREMENT,textinput TEXT)",
   },
-  /** Postgres-config:
+
+  /** Postgres-config, für später im Semester: */
+  /*
   database: {
     client: "pg",
     connection: {
