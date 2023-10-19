@@ -109,7 +109,7 @@ $ docker build -t m293-mkdocs /pfad/zum/Ordner/Des/Dockerfile/
 $ docker run --rm -ti -v /pfad/zum/mkdocs/folder:/docs -p 8000:8000 m293-mkdocs
 ```
 
-Dies wir dim Laufe des Semesters eingeführt.
+Dies wird im Laufe des Semesters eingeführt.
 
 ## Ziel für den Ausbau
 
