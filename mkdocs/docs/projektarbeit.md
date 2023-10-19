@@ -143,9 +143,9 @@ Ich erwarte eine Dokumentation in Form eines `mkdocs`-Markdown-Containers. Die D
   * Wie erstellen Sie die Images der einzelnen Container?
 * **Dokumentation der verwendeten Docker-Kommandos**<br>
   Während des Semesters und im Laufe der Projektarbeit haben Sie ganz viele Docker- und Docker-Compose-Kommandos kennengelernt. Picken Sie sich **mindestens 3** davon aus, und **dokumentieren Sie die gelernten/im Projekt verwendeten Kommandos (z.B. `docker run`)**:
-  * Name des Kommandos
-  * Beschreibung: Was macht es, wann / wo wird es benötigt?
-  * ein (vollständiges) Beispiel des Kommandos
+    * Name des Kommandos
+    * Beschreibung: Was macht es, wann / wo wird es benötigt?
+    * ein (vollständiges) Beispiel des Kommandos
 
 ## Bewertung
 
