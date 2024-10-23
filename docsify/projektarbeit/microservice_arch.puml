@@ -1,0 +1,41 @@
+@startuml microservice_arch
+title Ziel-Architektur als Microservices
+
+[Client - Browser] as client
+node "eigene Microservices" {
+	package "Dokumentation" {
+		() http as http_doc
+		[docsify-Dokumentation] as doc
+		doc -right- http_doc
+	}
+	package "statische Seiten-Service" as static_site {
+		[gebildete Seiten\nhttp-Server] as build_site
+		() http as http_site
+		build_site -right- http_site
+		[Site-Builder] as site_builder
+	}
+	package "Kommentar-Service" as comment_backend {
+		[Kommentar-Service\nnode-Server] as comment_service
+		() http as http_comment
+		comment_service -right- http_comment
+	}
+	package "Formular-Service" as form_backend {
+		[Form-Service-API\nnode-Server] as form_service
+		() http as http_form
+		form_service -right- http_form
+	}
+	[Datenbank - Postgresql o.ä.] as db
+
+}
+
+[Email-Dienst (extern)] as email
+
+client ..> http_site: Ruft auf: URL
+client ..> http_doc: Ruft auf
+client ..> http_form: /feedback
+client ..> http_comment: /api/save-text,\n/api/get-texts
+form_service ..> email: sendet
+form_service ..> db: speichert
+comment_service ..> db: speichert, liest
+site_builder .up.> build_site: generiert
+@enduml

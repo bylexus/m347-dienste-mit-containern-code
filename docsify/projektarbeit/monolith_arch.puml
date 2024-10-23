@@ -1,0 +1,37 @@
+
+@startuml
+title
+Monolith - Komponenten
+Ausgangslage: kleine Demo-App
+endtitle
+
+[Client - Browser] as client
+together {
+	node "Monolith" as monolith {
+		[Site-Builder] as site_builder
+		package "NodeJS-Web-Server mit App-Logik" as webserver {
+			[statische Seiten] as static_site
+			[Form-backend] as form_backend
+			[Demo-API] as api
+		}
+		[Datenbank - sqlite in-memory] as db
+	}
+	[docsify-Dokumentation] as doc
+}
+
+interface SMTP as smtp
+[Email-Dienst (extern)] as email
+smtp -- email
+
+interface HTTP as http 
+http -- webserver
+client ..> http: Ruft auf
+
+interface HTTP as http_doc 
+http_doc -- doc
+client ..> http_doc: Ruft auf
+
+api ..> db: fragt ab
+form_backend ..> smtp: sendet
+site_builder .up.> static_site: generiert
+@enduml
