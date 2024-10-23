@@ -1,20 +1,19 @@
 # Modul M347 - Dienste mit Containern
 
-Dies ist das Einstiegsprojekt für das Modul M345. Es besteht aus:
+Dies ist das Einstiegsprojekt für das Modul M347. Es besteht aus:
 
-* `mkdocs`: Einem mkdocs-Skelet für die Erstellung der Projektdokumentation
+* `docsify`: Einem [docsify](https://docsify.js.org/)-Gerüst für die Erstellung der Projektdokumentation
 * `monolith`: Einem Einstiegs-Projekt, als monolithische Applikation implementiert,
 	welche im Lauf des Moduls in mehrere Dienste aufgetrennt wird.
 
 
 Die monolithische Applikation besteht aus:
 
-* einem static site builder [11ty](https://www.11ty.dev/), welcher die Frontend-Webseite bildet / generiert
-* einem kleinen nodejs-Webserver (expressjs), welcher die statische Site ausliefern kann 
-  und eine Demo-API-Route implementiert, um:
+* einem kleinen nodejs-Webserver (expressjs), welcher eine statische (HTML-)Site ausliefern kann und eine Demo-API-Route implementiert, um:
   * eine Backend-API zu demonstrieren
   * den Datenbank-Zugriff zu demonstrieren
 * einem Mail-Dienst. Dieser kann extern sein, wir verwenden beispielhaft ethereal.email
+* **Anmerkung**: die statische Seite übernehmen / bauen wir mit dem Projekt aus dem letzten Model (M293): dazu haben Sie damals eine Site mittels einem static site builder [11ty](https://www.11ty.dev/) gebaut, welcher die Frontend-Webseite bildet / generiert
 
 ## Bilden der statischen Webseite
 
@@ -41,19 +40,19 @@ Wenn das Docker-Image verwendet wird, kann dies folgendermassen angestossen werd
 ```sh
 # unter unix-artigen Systemen:
 $ cd monolith/
-$ docker run --rm -ti -v "$(pwd)":/app -w /app node:18 bash
+$ docker run --rm -ti -v "$(pwd)":/app -w /app node:20 bash
 docker> npm install
 docker> npm run build
 
 # unter Windows:
 $ cd monolith/
-$ docker run --rm -ti -v "%cd%":/app -w /app node:18 bash
+$ docker run --rm -ti -v "%cd%":/app -w /app node:20 bash
 docker> npm install
 docker> npm run build
 
 # unter Windows mit PowerShell:
 $ cd monolith/
-$ docker run --rm -ti -v "$pwd":/app -w /app node:18 bash
+$ docker run --rm -ti -v "$pwd":/app -w /app node:20 bash
 docker> npm install
 docker> npm run build
 ```
@@ -70,43 +69,66 @@ $ npm install # einmalig
 $ node server.js
 ```
 
-Oder mittels einem Docker-Image (Hier: NodeJS 18-Image vom dockerhub):
+Oder mittels einem Docker-Image (Hier: NodeJS 20-Image vom dockerhub):
 
 ```sh
 # unter unix-artigen Systemen:
 $ cd monolith/
-$ docker run --rm -ti -v "$(pwd)":/app -w /app -p 3000:3000 node:18 node server.js
+$ docker run --rm -ti -v "$(pwd)":/app -w /app -p 3000:3000 node:20 node server.js
 
 # unter Windows:
 $ cd monolith/
-$ docker run --rm -ti -v "%cd%":/app -w /app -p 3000:3000 node:18 node server.js
+$ docker run --rm -ti -v "%cd%":/app -w /app -p 3000:3000 node:20 node server.js
 
 # unter Windows mit PowerShell:
 $ cd monolith/
-$ docker run --rm -ti -v "$pwd":/app -w /app -p 3000:3000 node:18 node server.js
+$ docker run --rm -ti -v "$pwd":/app -w /app -p 3000:3000 node:20 node server.js
 ```
 
 Der Server läuft nun auf TCP Port `3000` und liefert Ihre statische Seite unter `monolith/site/` aus.
 
-## Starten / Nutzen der mkdocs-Dokumentation
+## Starten / Nutzen der docsify-Dokumentation
 
-Im Verlauf des Semesters wird mittels [mkdocs](https://www.mkdocs.org/) eine Dokumentation erstellt. Ziel ist, die
+Im Verlauf des Semesters wird mittels [docsify](https://docsify.js.org/) eine Dokumentation erstellt. Ziel ist, die
 Doku auch als eigenen Dienst / Container zu bauen.
 
-Ein minimalistisches Dockerfile dazu sieht folgendermassen aus:
+Wir werden docsify im Verlauf des Semesters als Docker-Container umsetzen.
+
+In der Zwischenzeit können Sie docsify mittels npm lokal installieren und starten:
+
+```sh
+npm install -g docsify-cli
+cd docsify
+docsify serve
+```
+
+
+Ein minimalistisches Dockerfile für einen Docsify-Container sieht folgendermassen aus:
 
 ```Dockerfile
-FROM debian:bookworm-slim
-WORKDIR /docs
-RUN apt-get update && apt-get install -y python3 python3-pip mkdocs
-CMD mkdocs serve --dev-addr 0.0.0.0:8000
+#  minimal docsify docker
+# build image with:
+#   docker build -t m347-docsify .
+# create and start container with:
+#  docker run --name m347-docsify -t -v "$(pwd):/app" -w /app -p 3000:3000 m347-docsify
+FROM node:20
+
+EXPOSE 3000
+RUN npm install -g docsify-cli@4
+WORKDIR /app
+CMD ["docsify", "serve", "."]
+
 ```
 
 Gestartet wird der Container dann so:
 
 ```sh
-$ docker build -t m293-mkdocs /pfad/zum/Ordner/Des/Dockerfile/
+$ docker build -t m347-docsify /pfad/zum/Ordner/Des/Dockerfile/
 $ docker run --rm -ti -v /pfad/zum/mkdocs/folder:/docs -p 8000:8000 m293-mkdocs
+# Powershell:
+$ docker run --name m347-docsify -v "${pwd}:/app" -w /app -p 3000:3000 m347-docsify
+# Unix bash:
+$ docker run --name m347-docsify -v "$(pwd):/app" -w /app -p 3000:3000 m347-docsify
 ```
 
 Dies wird im Laufe des Semesters eingeführt.
