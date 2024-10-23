@@ -39,6 +39,7 @@ const knex = require("knex")({
   client: config.database.client,
   connection: config.database.connection,
   debug: true,
+  useNullAsDefault: true,
   pool: {
     afterCreate: function (conn, done) {
       // Ausführen des initialen SQL, siehe config.php: Hier wird eine erste Tabelle erstellt:
@@ -87,8 +88,10 @@ app.post(
     // Hier lösen wir das Feedback-Email aus:
     try {
       let previewUrl = await sendFeedbackEmail(name, vorname);
-      // ... und leiten den Browser zu einer Dankes-Seite um:
-      res.redirect("/thankyou/?preview=" + previewUrl);
+      // ... und rendern eine Antwortseite:
+      res.send(`<h1>Vielen Dank!</h1>
+                <p>Ihr Feedback ist angekommen.</p>
+                <p><a href="${previewUrl}">Vorschau-URL</a>`);
     } catch (err) {
       console.error(err);
       res.status(500).send(String(err));
@@ -101,11 +104,11 @@ app.post(
 app
   .route("/api/save-text")
   .options(cors())
-  .post(cors(), bodyParser.json(), async (req, res) => {
-    if (req.body.text) {
+  .post(cors(), bodyParser.urlencoded(), async (req, res) => {
+    if (req.body.textfeld) {
       try {
         let result = await knex("textinput").insert({
-          textinput: req.body.text,
+          textinput: req.body.textfeld,
         });
         res.json(result);
       } catch (e) {

@@ -13,55 +13,25 @@ rel_prefix: ..
 </p>
 
 <div>
-	<form id="eingabeform" enctype="application/x-www-form-urlencoded">
+	<!-- Wir verwenden die htmx-Library (https://htmx.org/) für JavaScript-Form-Requests: -->
+	<form id="input-form" 
+		  hx-post="http://localhost:3000/api/save-text" 
+		  hx-disabled-elt="find button[type=submit]" 
+		  hx-swap="none" 
+		  hx-on::after-request="this.reset()" 
+		  enctype="application/x-www-form-urlencoded">
 		<label>Text eingeben:</label>
 		<input type="text" name="textfeld" />
-		<button type="button" id="senden">Speichern</button>
+		<button type="submit" id="senden">Speichern</button>
 	</form>
 </div>
 
 <div>
 	<h2>Vorhandene Einträge</h2>
-	<div id="results">
+	<!-- Wir verwenden die htmx-Library (https://htmx.org/) für JavaScript-Requests: -->
+	<div id="results" 
+		 hx-get="http://localhost:3000/api/get-texts" 
+		 hx-trigger="load, htmx:afterRequest from:form#input-form" >
 		... keine Resultate ...
 	</div>
 </div>
-
-<script>
-	let apiRoot = '/api';
-	let btn = document.getElementById('senden');
-
-
-	// initial: Laden der vorhandenen Texte:
-	loadTextTable();
-
-
-	btn.addEventListener('click', async () => {
-		let form = document.getElementById('eingabeform');
-		console.log(form.textfeld.value);
-		try {
-			btn.disabled = true;
-			let result = await fetch(`${apiRoot}/save-text`, {
-				method: 'POST',
-				headers: {'Content-Type': 'application/json'},
-				body: JSON.stringify({
-					text: form.textfeld.value
-				})
-			});
-			if (!result.ok) {
-				throw new Error('DB Error');
-			}
-		} catch(e) {
-			// Fehlerbehandlung...
-		} finally {
-			btn.disabled = false;
-			// Texttabelle neu laden:
-			loadTextTable();
-		}
-	});
-
-	async function loadTextTable() {
-		let result = await fetch(`${apiRoot}/get-texts`);
-		document.getElementById('results').innerHTML = await result.text();
-	}
-</script>
