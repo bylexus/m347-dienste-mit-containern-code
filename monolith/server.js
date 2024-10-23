@@ -30,6 +30,9 @@ const staticSiteFolder = "site";
 const app = express();
 const port = config.server.port;
 
+// ---------------------------------------------------------------
+// Datenbank-Setup, notwendig für /api/save-text und /api/get-texts
+// ---------------------------------------------------------------
 /**
  * Datenbank konfigurieren:
  *
@@ -67,38 +70,9 @@ const knex = require("knex")({
   },
 });
 
-/** ------------------- URL-Routen und -Handler konfigurieren -------------------- */
-
-// Wir registrieren einen Route-Handler für die
-// Route '/feedback': Unser Formular schickt seine Daten hierhin
-app.post(
-  "/feedback",
-  // die body-parser-Middleware erlaubt das Auslesen von
-  // Formulardaten, hier in der urlencoded-Form:
-  bodyParser.urlencoded({ extended: false }),
-  async (req, res) => {
-    // Wir verarbeiten die Form-Daten:
-    let name = req.body.name;
-    let vorname = req.body.vorname;
-    console.log(`name: ${name}`);
-    console.log(`vorname: ${vorname}`);
-
-    // TODO: Hier wollen wir die Formulardaten auch in der Datenbank speichern!
-
-    // Hier lösen wir das Feedback-Email aus:
-    try {
-      let previewUrl = await sendFeedbackEmail(name, vorname);
-      // ... und rendern eine Antwortseite:
-      res.send(`<h1>Vielen Dank!</h1>
-                <p>Ihr Feedback ist angekommen.</p>
-                <p><a href="${previewUrl}">Vorschau-URL</a>`);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send(String(err));
-    }
-  }
-);
-
+// ---------------------------------------------------------------
+// Routen für DB-Demo (/api/save-text und /api/get-texts)
+// ---------------------------------------------------------------
 // Route: '/api/save-text', mit aktivierten CORS-Headern,
 // um Cross-Domain-Requests zu ermöglichen:
 app
@@ -147,26 +121,48 @@ app.route("/api/get-texts").get(cors(), async (req, res) => {
     res.status(500).send(e.message);
   }
 });
-
-// statische (Frontend)-Site: alle Files unter site/ werden
-// als statische Dateien ausgeliefert:
-// Diesen Teil wollen wir später vom Backend-Server lösen:
-app.use(express.static(staticSiteFolder));
+// ---------------------------------------------------------------
 
 // ---------------------------------------------------------------
-// Starten des Servers und Konfigurieren unseres Email-Demos:
+// Route-Handler für /feedback (Form-backend)
+// ---------------------------------------------------------------
+// Wir registrieren einen Route-Handler für die
+// Route '/feedback': Unser Formular schickt seine Daten hierhin
+app.post(
+  "/feedback",
+  // die body-parser-Middleware erlaubt das Auslesen von
+  // Formulardaten, hier in der urlencoded-Form:
+  bodyParser.urlencoded({ extended: false }),
+  async (req, res) => {
+    // Wir verarbeiten die Form-Daten:
+    let name = req.body.name;
+    let vorname = req.body.vorname;
+    console.log(`name: ${name}`);
+    console.log(`vorname: ${vorname}`);
+
+    // TODO: Hier wollen wir die Formulardaten auch in der Datenbank speichern!
+
+    // Hier lösen wir das Feedback-Email aus:
+    try {
+      let previewUrl = await sendFeedbackEmail(name, vorname);
+      // ... und rendern eine Antwortseite:
+      res.send(`<h1>Vielen Dank!</h1>
+                <p>Ihr Feedback ist angekommen.</p>
+                <p><a href="${previewUrl}">Vorschau-URL</a>`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send(String(err));
+    }
+  }
+);
+
+// Konfigurieren des Email-Dienstes für den Formular-Daten -Versand:
 let emailTransport = null;
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-
-  // Email-Setup, hier mit dem Fake-Dienst ethereal.email:
-  setupEmail().then((transport) => {
-    emailTransport = transport;
-  });
+// Email-Setup, hier mit dem Fake-Dienst ethereal.email:
+setupEmail().then((transport) => {
+  emailTransport = transport;
 });
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 /**
  * Hilfsfunktion: konfiguriert einen Email-Transport für nodemailer,
  * hier mit dem Test-Maildienst ethereal.email. Liefert den transport
@@ -230,3 +226,24 @@ function sendFeedbackEmail(name, vorname) {
     });
   });
 }
+// ---------------------------------------------------------------
+
+
+
+// ---------------------------------------------------------------
+// Route-Handler alle statischen Files (restliche URLs)
+// ---------------------------------------------------------------
+// statische (Frontend)-Site: alle Files unter site/ werden
+// als statische Dateien ausgeliefert:
+// Diesen Teil wollen wir später vom Backend-Server lösen:
+app.use(express.static(staticSiteFolder));
+
+
+
+// ---------------------------------------------------------------
+// App-Start
+// ---------------------------------------------------------------
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+// ---------------------------------------------------------------
