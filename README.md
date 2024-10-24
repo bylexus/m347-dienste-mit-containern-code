@@ -106,11 +106,6 @@ docsify serve
 Ein minimalistisches Dockerfile für einen Docsify-Container sieht folgendermassen aus:
 
 ```Dockerfile
-#  minimal docsify docker
-# build image with:
-#   docker build -t m347-docsify .
-# create and start container with:
-#  docker run --name m347-docsify -t -v "$(pwd):/app" -w /app -p 3000:3000 m347-docsify
 FROM node:20
 
 EXPOSE 3000
@@ -123,11 +118,11 @@ CMD ["docsify", "serve", "."]
 Gestartet wird der Container dann so:
 
 ```sh
+# Image erstellen:
 $ docker build -t m347-docsify /pfad/zum/Ordner/Des/Dockerfile/
-$ docker run --rm -ti -v /pfad/zum/mkdocs/folder:/docs -p 8000:8000 m293-mkdocs
-# Powershell:
+# Container starten, Powershell:
 $ docker run --name m347-docsify -v "${pwd}:/app" -w /app -p 3000:3000 m347-docsify
-# Unix bash:
+# Container starten, Unix bash:
 $ docker run --name m347-docsify -v "$(pwd):/app" -w /app -p 3000:3000 m347-docsify
 ```
 
