@@ -23,7 +23,7 @@ Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: Ziel ist, dass
 Wir erarbeiten dazu gemeinsam die notwendigen Kenntnisse, während dem Sie die finale Funktionalität dann selber
 erarbeiten und als Projektarbeit abgeben.
 
-## Ausgangslage
+## <a style="page-break-before:always">Ausgangslage</a>
 
 Wir beginnen mit einer monolithischen Architektur: Ein Server "macht alles": Frontend, Backend, Datenbank. Sie erhalten eine
 kleine Beispiel-Applikation mit folgenden Komponenten:
@@ -72,7 +72,7 @@ verpackte Apps aufgetrennt werden:
 Wir werden im Laufe des Semester die notwendigen Handwerkzeuge kennen lernen.
 **Es obliegt aber in Ihrer Verantwortung, die bestehende Applikation soweit auszubauen / zu ergänzen, damit die geforderte Funktionalität abgebildet werden kann!**
 
-## Ihre Aufgabe
+## <a style="page-break-before:always">Ihre Aufgabe</a>
 
 Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuliefern. Im Detail heisst dies:
 
