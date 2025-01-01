@@ -28,7 +28,7 @@ fertig generierte HTML-Seiten nach `monolith/site/`.
 ```sh
 $ cd monolith/
 $ npm install  # einmalig
-$npm run build # bildet monolith/src/ --> monolith/site/
+$ npm run build # bildet monolith/src/ --> monolith/site/
 ```
 
 Dies erstellt / kopiert die statischen Webseiten-Files nach `monolith/site`,
@@ -52,7 +52,7 @@ docker> npm run build
 
 # unter Windows mit PowerShell:
 $ cd monolith/
-$ docker run --rm -ti -v "$pwd":/app -w /app node:20 bash
+$ docker run --rm -ti -v "${pwd}":/app -w /app node:20 bash
 docker> npm install
 docker> npm run build
 ```
@@ -82,7 +82,7 @@ $ docker run --rm -ti -v "%cd%":/app -w /app -p 3000:3000 node:20 node server.js
 
 # unter Windows mit PowerShell:
 $ cd monolith/
-$ docker run --rm -ti -v "$pwd":/app -w /app -p 3000:3000 node:20 node server.js
+$ docker run --rm -ti -v "${pwd}":/app -w /app -p 3000:3000 node:20 node server.js
 ```
 
 Der Server läuft nun auf TCP Port `3000` und liefert Ihre statische Seite unter `monolith/site/` aus.
