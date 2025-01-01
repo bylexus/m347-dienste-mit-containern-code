@@ -85,7 +85,7 @@ Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuli
         - der GET-Aufruf "http://api/get-comments?id=produktseite" liefert Kommentare zu einer Produktseite
         - ein POST-Request nach "http://api/send-comment?id=produktseite" speichert einen Kommentar zur Produktseite
 	* **Datenbank-Service**: **optional**: dieser Container stellt eine PostgreSQL-Datenbank zur Verfügung. Diesen Container erstellen wir im Verlauf des Semesters. Das notwendige Datenbank-Schema dazu müssen Sie als Teil der Projektarbeit selber umsetzen. **Sie können auf diesen Dienst verzichten, und die Daten jeweils in einer lokalen sqlite-Datenbank speichern.**
-	* **docsify-Container**: Dieser Container stellt die laufende `docsify`-Dokumentation zur Verfügung, entweder als laufende Docsify-Applikation, oder ebenfalls als statische Seiten (`docsify build` als Stichwort).
+	* **docsify-Container**: Dieser Container stellt die laufende `docsify`-Dokumentation zur Verfügung, welcher die Dokumentation ausliefert.
 * Sie erstellen die notwendigen Scripte / Compose-Files, um alle Dienste
 	miteinander zu starten / zu koordinieren
 * Sie liefern den gesamten Code inkl. dazu notwendiger Docker- und Compose-File und Dokumentation im **Classroom-Git-Repository** ab.
@@ -105,7 +105,7 @@ Sie geben den **gesamten Code inkl. Dokumentation, Konfiguration und Datenbank-S
   * (optional) Datenbank-Container für die PostgreSQL/Maria/MySQL-Datenbank
   * Sorgen Sie dafür, dass die notwendigen Daten (z.B. Datenbank) **beim ersten Start Ihrer Applikationen automatisch korrekt erzeugt werden**
 	* Für Postgres-Datenbank: Dazu gehört ein init-Script, welches das Datenbank-Schema beim Erstellen des Containers erzeugt (siehe <https://hub.docker.com/_/postgres/>, Abschnitt "Initialization Scripts")
-  * docsify-Container, der die Dokumentation als Dienst bereitstellt, wahlweise als dynamische docsify-Applikation, oder als statisch gebildete Seiten (`docsify build` erzeugt auch statische Seiten)
+  * docsify-Container, der die Dokumentation als Dienst bereitstellt.
 
 Ihr Repository muss alles notwendige liefern, damit ich die Dienste starten kann.
 

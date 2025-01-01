@@ -78,20 +78,24 @@ const knex = require("knex")({
 app
   .route("/api/save-text")
   .options(cors())
-  .post(cors(), bodyParser.urlencoded(), async (req, res) => {
-    if (req.body.textfeld) {
-      try {
-        let result = await knex("textinput").insert({
-          textinput: req.body.textfeld,
-        });
-        res.json(result);
-      } catch (e) {
-        console.log(e);
-        res.status(500).send(e.message);
+  .post(
+    cors(),
+    bodyParser.urlencoded({ extended: false }),
+    async (req, res) => {
+      if (req.body.textfeld) {
+        try {
+          let result = await knex("textinput").insert({
+            textinput: req.body.textfeld,
+          });
+          res.json(result);
+        } catch (e) {
+          console.log(e);
+          res.status(500).send(e.message);
+        }
       }
+      res.end();
     }
-    res.end();
-  });
+  );
 
 // Route: '/api/get-texts', mit aktivierten CORS-Headern,
 // um Cross-Domain-Requests zu ermöglichen:
@@ -128,33 +132,37 @@ app.route("/api/get-texts").get(cors(), async (req, res) => {
 // ---------------------------------------------------------------
 // Wir registrieren einen Route-Handler für die
 // Route '/feedback': Unser Formular schickt seine Daten hierhin
-app.post(
-  "/feedback",
-  // die body-parser-Middleware erlaubt das Auslesen von
-  // Formulardaten, hier in der urlencoded-Form:
-  bodyParser.urlencoded({ extended: false }),
-  async (req, res) => {
-    // Wir verarbeiten die Form-Daten:
-    let name = req.body.name;
-    let vorname = req.body.vorname;
-    console.log(`name: ${name}`);
-    console.log(`vorname: ${vorname}`);
+// mit aktivierten CORS-Headern, um Cross-Domain-Requests zu ermöglichen:
+app
+  .route("/feedback")
+  .options(cors())
+  .post(
+    cors(),
+    // die body-parser-Middleware erlaubt das Auslesen von
+    // Formulardaten, hier in der urlencoded-Form:
+    bodyParser.urlencoded({ extended: false }),
+    async (req, res) => {
+      // Wir verarbeiten die Form-Daten:
+      let name = req.body.name;
+      let vorname = req.body.vorname;
+      console.log(`name: ${name}`);
+      console.log(`vorname: ${vorname}`);
 
-    // TODO: Hier wollen wir die Formulardaten auch in der Datenbank speichern!
+      // TODO: Hier wollen wir die Formulardaten auch in der Datenbank speichern!
 
-    // Hier lösen wir das Feedback-Email aus:
-    try {
-      let previewUrl = await sendFeedbackEmail(name, vorname);
-      // ... und rendern eine Antwortseite:
-      res.send(`<h1>Vielen Dank!</h1>
+      // Hier lösen wir das Feedback-Email aus:
+      try {
+        let previewUrl = await sendFeedbackEmail(name, vorname);
+        // ... und rendern eine Antwortseite:
+        res.send(`<h1>Vielen Dank!</h1>
                 <p>Ihr Feedback ist angekommen.</p>
                 <p><a href="${previewUrl}">Vorschau-URL</a>`);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send(String(err));
+      } catch (err) {
+        console.error(err);
+        res.status(500).send(String(err));
+      }
     }
-  }
-);
+  );
 
 // Konfigurieren des Email-Dienstes für den Formular-Daten -Versand:
 let emailTransport = null;
@@ -228,8 +236,6 @@ function sendFeedbackEmail(name, vorname) {
 }
 // ---------------------------------------------------------------
 
-
-
 // ---------------------------------------------------------------
 // Route-Handler alle statischen Files (restliche URLs)
 // ---------------------------------------------------------------
@@ -237,8 +243,6 @@ function sendFeedbackEmail(name, vorname) {
 // als statische Dateien ausgeliefert:
 // Diesen Teil wollen wir später vom Backend-Server lösen:
 app.use(express.static(staticSiteFolder));
-
-
 
 // ---------------------------------------------------------------
 // App-Start
