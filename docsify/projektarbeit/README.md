@@ -9,26 +9,29 @@ Sie am Schluss als "Gesamtpaket" als Projektarbeit abliefern.
 
 ## Ziel des Gesamtprojektes
 
-Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: Ziel ist, dass Sie Ihre Webseite folgendermassen ausbauen:
+Wir bauen auf Ihrem **Webseiten-Projekt aus dem Modul M293** auf: End-Ziel ist, dass Sie Ihre Webseite folgendermassen ausbauen:
 
 * Ihre Webseite wird aus **Templates (11ty) als statische Webseite gebildet**
+  (alternativ: siehe nächsten Punkt)
 * Ihre Webseite wird von einem **Frontend-Webservice** ausgeliefert
-* Ihre Webseite beinhaltet ein **Feedback-Formular**. Diese Feedbacks werden per **Mail** an eine Mailbox versandt, und
+  * (alternativ: für Schüler, welche ein Framework wie z.B. NuxtJS verwendet haben: Ihre NuxtJS-Applikation läuft als Docker-Dienst)
+* Ihre Webseite beinhaltet ein **Feedback-Formular**. Diese Feedbacks werden per **Mail** an eine Mailbox versandt, **UND**
   **in einer Datenbank** gespeichert.
+* Sie stellen einen Dummy-Webdienst auf Basis **smtp4dev** zur Verfügung, welcher einen Mailserver simuliert. Ihre Feedback-Mails gehen an diesen Mailserver.
 * Ihre Webseite kann **Kommentare pro Detailseite** (z.B. Rückmeldung zu einem bestimmten Produkt) erfassen und anzeigen.
-  Diese Kommentare werden pro Detailseite in einer Datenbank festgehalten und wieder an der korrekten Stelle (Seite) ausgeliefert.
+  Diese Kommentare werden **pro Detailseite** in einer Datenbank festgehalten und wieder an der korrekten Stelle (Seite) ausgeliefert.
 * Die einzelnen Dienste sollen als **Container-Dienste** umgesetzt und miteinander verknüpft werden.
 * Sie **dokumentieren** die Gesamt-Architektur in einer `docsify`-Dokumentationsseite.
 
 Wir erarbeiten dazu gemeinsam die notwendigen Kenntnisse, während dem Sie die finale Funktionalität dann selber
 erarbeiten und als Projektarbeit abgeben.
 
-## Ausgangslage
+## <a style="page-break-before:always">Ausgangslage</a>
 
 Wir beginnen mit einer monolithischen Architektur: Ein Server "macht alles": Frontend, Backend, Datenbank. Sie erhalten eine
 kleine Beispiel-Applikation mit folgenden Komponenten:
 
-![Monolithische Architektur](./monolith_arch.svg)
+![Monolithische Architektur](./monolith_arch.png)
 
 * Sie erhalten von mir eine kleine **Web-Applikation** auf Basis **NodeJS** / **ExpressJS** (`monolith/server.js`).
 * Dieser liefert:
@@ -41,7 +44,7 @@ kleine Beispiel-Applikation mit folgenden Komponenten:
 
 Ihre statischen Seiten erzeugen Sie mittels der aus M293 bekannten **statischen Site-Generator**-Architektur (11ty).
 
-Dieser Server ist **monolithisch** umgesetzt, er implementiert also alle Funktionalitäten selber als einzige, grosse Applikation.
+Dieser Server ist **monolithisch** umgesetzt, er implementiert also alle Funktionalitäten selber als einzige, grosse Applikation (server.js).
 
 Ihr **Client**, also der Browser, macht nur Verbindung(en) zu diesem einen Server.
 
@@ -51,13 +54,15 @@ Daneben steht diese `docsify`-Seite als separate Applikation zur Verfügung.
 
 Diese monolithische Architektur überführen Sie im Verlauf des Projektes in einzelne **Micro-Services**:
 
-![Microservice-Architektur](./microservice_arch.svg)
+![Microservice-Architektur](./microservice_arch.png)
 
 Die monolithische Demo-Applikation `server.js` soll in einzelne, in Container
 verpackte Apps aufgetrennt werden:
 
-* ein **Frontend**-Dienst liefert Ihre statische Seite, also HTML, CSS und weiteren statischen Content, aus. Dazu wird ein einfacher Webserver wie z.B. [Apache HTTP](https://httpd.apache.org/) oder [Nginx](https://nginx.org/) verwendet.
-* ein **Forms-Service** dient für die Entgegennahme Ihres Feedback-Formulars (NodeJS-ExpressJS-Service):
+* ein **Frontend**-Dienst liefert Ihre statische Seite, also HTML, CSS und weiteren statischen Content, aus. Dazu wird ein einfacher Webserver wie z.B. [Apache HTTP](https://httpd.apache.org/) oder [Nginx](https://nginx.org/) verwendet. 
+  * **Alternative**:<br>
+    Falls Sie Ihre Applikation als NuxtJS-App umgesetzt haben: Ihre NuxtJS-Applikation läuft als Docker-Dienst ohne externe Volumes. Feedback- und Kommentar-Service sind von dieser Applikation AUSgelagert (siehe unten).
+* ein **Feedback-Service** dient für die Entgegennahme der Daten Ihres Feedback-Formulars (NodeJS-ExpressJS-Service):
   Dieser Service soll:
 	* den Formular-Inhalt an eine Mailadresse senden
 	* den Formular-Inhalt in einer Datenbank-Tabelle zu Referenzzwecken speichern
@@ -66,25 +71,28 @@ verpackte Apps aufgetrennt werden:
 	  Datenbank liest und dem Frontend als HTML-Snippet zur Verfügung stellt
 	* Kommentare zu einer einzelnen Webseite entgegennehmen und in der
 	  Datenbank speichern
-* die **Datenbank** steht wahlweise als **sqlite-Datenbank pro Service** oder ebenfalls als zentraler Container-Dienst zur Verfügung.
-* die **Dokumentation** steht weiterhin als Teil dieser Architektur zur Verfügung.
+* ein **Mailserver**, welcher die Feedback-Mails entgegennimmt und in einer Weboberfläche anzeigt (smtp4dev)
+* die **Datenbank** steht **wahlweise** als **sqlite-Datenbank pro Service** oder ebenfalls als **zentraler Container-Dienst** zur Verfügung.
+* die **Dokumentation** (docsify) steht weiterhin als Teil dieser Architektur zur Verfügung.
 
 Wir werden im Laufe des Semester die notwendigen Handwerkzeuge kennen lernen.
 **Es obliegt aber in Ihrer Verantwortung, die bestehende Applikation soweit auszubauen / zu ergänzen, damit die geforderte Funktionalität abgebildet werden kann!**
 
-## Ihre Aufgabe
+## <a style="page-break-before:always">Ihre Aufgabe</a>
 
 Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuliefern. Im Detail heisst dies:
 
 * Sie erstellen die verschiedenen Container-Dienste wie oben gezeigt:
     * **Frontend-Seiten-Auslieferung**: ein Container, der die statischen Seiten beinhaltet und ausliefert. Dazu verwenden Sie einen einfachen Webserver wie z.B. [Apache HTTP](https://httpd.apache.org/) oder [Nginx](https://nginx.org/).
+     Alternativ stellen Sie Ihre NuxJS-Applikation als Docker-Dienst ohne externe Volumes zur Verfügung.
     * **Forms/Feedback-Service**: ein Container, der die Feedback-API-Funktionalität umsetzt. **Das Speichern der Kommentare in der Datenbank müssen Sie als Teil der Projektarbeit noch selber umsetzen.**. Als Ausgangslage kann die monolithische Applikation dienen, die Sie umbauen / ergänzen können.
-    * **Kommentar-Service**: ein Container, der die Kommentar-Funktion / API umsetzt. Diese Funktionalität müssen Sie als Teil der Projektarbeit selber umsetzen.
+    * **Kommentar-Service**: ein Container, der die Kommentar-Funktion / API umsetzt. Diese Funktionalität müssen Sie als Teil der Projektarbeit selber umsetzen resp. den bestehenden **API-Dienst ausbauen**.
       **Ziel ist, dass Sie Kommentare pro Seite verwalten können**: Dazu muss Ihr Service Kommentare nach einem Identifikator ausliefern können.<br>
       **Beispiel:**
         - der GET-Aufruf "http://api/get-comments?id=produktseite" liefert Kommentare zu einer Produktseite
         - ein POST-Request nach "http://api/send-comment?id=produktseite" speichert einen Kommentar zur Produktseite
-	* **Datenbank-Service**: **optional**: dieser Container stellt eine PostgreSQL-Datenbank zur Verfügung. Diesen Container erstellen wir im Verlauf des Semesters. Das notwendige Datenbank-Schema dazu müssen Sie als Teil der Projektarbeit selber umsetzen. **Sie können auf diesen Dienst verzichten, und die Daten jeweils in einer lokalen sqlite-Datenbank speichern.**
+  * **Mail-Service**: Sie erstellen einen **smtp4dev**-Server, welcher die Feedback-Mails entgegennimmt und welche in der Weboberfläche angesehen werden können. Die Mails werden in einem persistenten Volume gespeichert.
+	* **Datenbank-Service**: **optional**: dieser Container stellt eine PostgreSQL/MySQL-Datenbank zur Verfügung. Diesen Container erstellen wir im Verlauf des Semesters. Das notwendige Datenbank-Schema dazu müssen Sie als Teil der Projektarbeit selber umsetzen. **Sie können auf diesen Dienst verzichten, und die Daten jeweils in einer lokalen sqlite-Datenbank speichern.**
 	* **docsify-Container**: Dieser Container stellt die laufende `docsify`-Dokumentation zur Verfügung, welcher die Dokumentation ausliefert.
 * Sie erstellen die notwendigen Scripte / Compose-Files, um alle Dienste
 	miteinander zu starten / zu koordinieren
@@ -102,6 +110,7 @@ Sie geben den **gesamten Code inkl. Dokumentation, Konfiguration und Datenbank-S
     und den Kommentar-Service (pro Detailseite) nutzt
   * Forms-Container mit dem Forms-API für Mail + DB-Eintrag 
   * Kommentar-Container mit dem Kommentar-API
+  * Mail-Container mit dem smtp4dev-Server
   * (optional) Datenbank-Container für die PostgreSQL/Maria/MySQL-Datenbank
   * Sorgen Sie dafür, dass die notwendigen Daten (z.B. Datenbank) **beim ersten Start Ihrer Applikationen automatisch korrekt erzeugt werden**
 	* Für Postgres-Datenbank: Dazu gehört ein init-Script, welches das Datenbank-Schema beim Erstellen des Containers erzeugt (siehe <https://hub.docker.com/_/postgres/>, Abschnitt "Initialization Scripts")
@@ -118,7 +127,7 @@ docker compose up
 ```
 
 Danach müssen die Dienste alle gebaut sein und laufen, inkl. der notwendigen
-Port-Weiterleitungen.
+Port-Weiterleitungen, Netzwerk- und Volume-Konfigurationen etc.
 
 **Sollten Sie für den Setup spezielle Instruktionen liefern wollen, erwarte ich ein README.md-File im obersten Verzeichnis des Repositories!**
 
