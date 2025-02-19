@@ -1,0 +1,70 @@
+---
+layout: layout-master.njk
+title: Feedback-Demo
+rel_prefix: ..
+---
+
+<h1>Formular-Demo</h1>
+
+<p>Dieses Formular dient als Demo für:</p>
+
+<ul>
+  <li>das Senden von Formulardaten an ein Backend</li>
+  <li>das Auswerten der Formulardaten im Backend</li>
+  <li>das Senden einer Antwort aufgrund der Daten vom Server</li>
+  <li>Die Seite verwendet JavaScript für das Senden/Empfangen der Daten zum Backend (anstatt Old-Scool Form-Posts)</a></li> 
+</ul>
+
+<!-- Wir verwenden JavaScript für Form-Requests, um die Seite nicht neu laden zu müssen: -->
+<form id="input-form" enctype="application/x-www-form-urlencoded" onsubmit="submitForm()">
+  <div>
+    <label>
+      Name:
+      <input name="name" />
+    </label>
+  </div>
+  <div>
+    <label>
+      Vorname:
+      <input name="vorname" />
+    </label>
+  </div>
+  <div>
+	<button type="submit" id="senden" onclick=submitForm()>Absenden</button>
+  </div>
+</form>
+
+<script>
+// Senden der Formulardaten mittels JavaScript-Request:
+async function submitForm() {
+	const sendBtn = document.getElementById('senden');
+	const form = document.getElementById('input-form');
+
+	try {
+		// Senden-Btn deaktivieren:
+		sendBtn.setAttribute('disabled', true);
+
+		// Formulardaten senden:
+		const sendRes = await fetch('http://localhost:3000/feedback', {
+			method: 'POST',
+			mode: 'cors',
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: new URLSearchParams(new FormData(form)),
+		});
+
+		// die Antwort übschreibt das HTML-Form:
+    const responseText = await sendRes.text();
+    const answerObj = document.createElement('div');
+    answerObj.innerHTML = responseText;
+    form.parentNode.replaceChild(answerObj, form);
+	} catch(e) {
+    console.error(e);
+  }
+
+	// wir beantworten die Funktion mit false, damit das HTML-Form nicht vom Browser
+	// sondern nur von unserem JavaScript abgeschickt wird:
+	return false;
+}
+</script>
