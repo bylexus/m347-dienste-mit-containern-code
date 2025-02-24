@@ -1,0 +1,17 @@
+# Definition der einzelnen Services / Containers:
+services:
+    # wir definieren den frontend-Service:
+    frontend:
+        # Benutze das httpd-Image vom Dockerhub, in der Version 2.4:
+        image: httpd:2.4
+        # wir mappen den Host-Port 8080 auf den Container-Port 80:
+        ports:
+            - "8080:80"
+        # Wir hängen den frontend/site/-Folder als Volume in den Container,
+        # und zwar in das Verzeichnis, in dem Apache httpd seine Webseiten sucht:
+        volumes:
+            - ./frontend/site:/usr/local/apache2/htdocs
+        # optional: falls CMD im Dockerfile nicht definiert ist,
+        # definieren wir hier, was beim Start ausgeführt werden soll:
+        # command: ..... z.B. node server.js, aber nicht für diesen Dienst
+        # oder besser: im dockerfile entsprechend setzen
