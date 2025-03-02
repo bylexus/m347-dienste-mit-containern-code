@@ -1,30 +1,59 @@
 # Notizen
 
-z.B. Docker-Kommandos, Konzepte, .....
+## Wichtige Docker-Kommandos
 
+### Monolith
 
-* eins
-* zwei
-* drei
-
-### Starten von docsify, ohne Docker:
+Erstmalig: Container erstellen und starten:
 
 ```sh
-cd pfad/zum/projekt/docsify
-npm install -g docsify-cli
-docsify serve
-``` 
-
-### Starten einer einfachen Ubuntu-Instanz:
-
-```
-docker run --rm -ti ubuntu bash
+cd monolith
+npm install # einmalig, damit die Packages installiert sind
+docker run --name m347-monolith -ti -v "$(pwd):/app" -w /app -p 3000:3000 node:20 node server.js
 ```
 
-### Starten des Monolith:
+Wenn erstellt, dann stoppen/starten mit:
 
-```
-docker run --rm -ti -v "$(pwd):/app" -w /app -p 3000:3000 node:20 bash
+```sh
+docker stop m347-monolith
+docker start m347-monolith
 ```
 
-**fett**, ~~kursiv~~
+### Frontend-Container mit httpd-Server
+
+Erstmalig: Container erstellen und starten:
+
+```sh
+cd frontend/
+docker run --name m347-frontend -d -p 8000:80 -v "$(pwd)/site/":/usr/local/apache2/htdocs/ httpd
+```
+
+Wenn erstellt, dann stoppen/starten mit:
+
+```sh
+docker start m347-frontend
+docker stop m347-frontend
+```
+
+### Docsify-Image / Container
+
+**Image bauen:**
+
+```sh
+cd docsify/
+docker build -t m347-docsify .
+```
+
+**Container erstellen und starten:**
+
+```sh
+cd docsify/
+docker run --name m347-docsify -d -ti -v "$(pwd):/app" -w /app -p 10000:10000 m347-docsify
+```
+
+Wenn erstellt, dann stoppen/starten mit:
+
+```sh
+docker start m347-docsify
+docker stop m347-docsify
+```

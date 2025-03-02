@@ -10,9 +10,6 @@
   },
   "author": "Alexander Schenkel",
   "license": "ISC",
-  "devDependencies": {
-    "@11ty/eleventy": "^3.0.0"
-  },
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
