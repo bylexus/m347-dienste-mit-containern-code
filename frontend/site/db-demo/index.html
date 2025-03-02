@@ -1,106 +1,102 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
+	<head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>DB-API-Demo</title>
-	<link rel="stylesheet" href="../css/styles.css" />
-</head>
-
-<body>
-	<header>
-		<nav>
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/lego-heads/">Lego-Heads</a></li>
-				<li><a href="/formular/">Form-Demo</a></li>
-				<li><a href="/db-demo/">DB-Demo</a></li>
-			</ul>
-		</nav>
-	</header>
-
-	<main>
-
-		<h1>Datenbank-API-Demo</h1>
-		<p>Das folgende Beispiel zeigt zwei asynchrone API-Requests ans backend:
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
 		<ul>
-			<li>Der Inhalt des Textfeldes wird ans backend geliefert, dieses speichert den Wert in einer Datenbank</li>
-			<li>Die vorhandenen Einträge werden als API-Request geholt und dargestellt.</li>
-			<li>Die Seite verwendet JavaScript für das Senden/Empfangen der Daten zum Backend (anstatt Old-Scool
-				Form-Posts)</a></li>
+			<li><a href="../">Home</a></li>
+			<li><a href="../lego-heads/">Lego-Heads</a></li>
+			<li><a href="../formular/">Form-Demo</a></li>
+			<li><a href="../db-demo/">DB-Demo</a></li>
 		</ul>
-		</p>
+	  </nav>
+    </header>
 
-		<div>
-			<!-- Wir verwenden JavaScript für Form-Requests, um die Seite nicht neu laden zu müssen: -->
-			<form id="input-form" onsubmit="submitForm()" enctype="application/x-www-form-urlencoded">
-				<label>Text eingeben:</label>
-				<input type="text" name="textfeld" />
-				<button type="submit" id="senden" onclick="submitForm()">Speichern</button>
-			</form>
-		</div>
+    <main>
+		
+<h1>Datenbank-API-Demo</h1>
+<p>Das folgende Beispiel zeigt zwei asynchrone API-Requests ans backend:
+	<ul>
+		<li>Der Inhalt des Textfeldes wird ans backend geliefert, dieses speichert den Wert in einer Datenbank</li>
+		<li>Die vorhandenen Einträge werden als API-Request geholt und dargestellt.</li>
+		<li>Die Seite verwendet JavaScript für das Senden/Empfangen der Daten zum Backend (anstatt Old-Scool Form-Posts)</a></li> 
+	</ul>
+</p>
 
-		<div>
-			<h2>Vorhandene Einträge</h2>
-			<!-- Diese Liste wird von der JavaScript-Funktion "loadResultList" geladen: -->
-			<div id="results">
-				... keine Resultate ...
-			</div>
-		</div>
+<div>
+	<!-- Wir verwenden JavaScript für Form-Requests, um die Seite nicht neu laden zu müssen: -->
+	<form id="input-form" onsubmit="submitForm()" enctype="application/x-www-form-urlencoded">
+		<label>Text eingeben:</label>
+		<input type="text" name="textfeld" />
+		<button type="submit" id="senden" onclick="submitForm()">Speichern</button>
+	</form>
+</div>
 
-		<script>
-			// Initial beim Seite laden: Resultatliste laden:
-			loadResultList();
+<div>
+	<h2>Vorhandene Einträge</h2>
+	<!-- Diese Liste wird von der JavaScript-Funktion "loadResultList" geladen: -->
+	<div id="results">
+		... keine Resultate ...
+	</div>
+</div>
 
-			// Senden der Formulardaten mittels JavaScript-Request:
-			async function submitForm() {
-				const sendBtn = document.getElementById('senden');
-				const form = document.getElementById('input-form');
+<script>
+// Initial beim Seite laden: Resultatliste laden:
+loadResultList();
 
-				try {
-					// Senden-Btn deaktivieren:
-					sendBtn.setAttribute('disabled', true);
+// Senden der Formulardaten mittels JavaScript-Request:
+async function submitForm() {
+	const sendBtn = document.getElementById('senden');
+	const form = document.getElementById('input-form');
 
-					// Formulardaten senden:
-					const sendRes = await fetch('http://localhost:3000/api/save-text', {
-						method: 'POST',
-						mode: 'cors',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
-						},
-						body: new URLSearchParams(new FormData(form)),
-					});
+	try {
+		// Senden-Btn deaktivieren:
+		sendBtn.setAttribute('disabled', true);
 
-					// Resultate-Liste neu laden:
-					loadResultList();
+		// Formulardaten senden:
+		const sendRes = await fetch('http://localhost:3000/api/save-text', {
+			method: 'POST',
+			mode: 'cors',
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: new URLSearchParams(new FormData(form)),
+		});
 
-					// Formular reset:
-					form.reset();
-				} finally {
-					sendBtn.removeAttribute('disabled');
-				}
+		// Resultate-Liste neu laden:
+		loadResultList();
 
-				// wir beantworten die Funktion mit false, damit das HTML-Form nicht vom Browser
-				// sondern nur von unserem JavaScript abgeschickt wird:
-				return false;
-			}
+		// Formular reset:
+		form.reset();
+	} finally {
+		sendBtn.removeAttribute('disabled');
+	}
 
-			// Laden der Resultate-Liste mittels JavaScript-Request:
-			async function loadResultList() {
-				const resultDiv = document.getElementById('results');
-				const listRes = await fetch("http://localhost:3000/api/get-texts")
-				const resHtml = await listRes.text();
-				resultDiv.innerHTML = resHtml;
-			}
-		</script>
+	// wir beantworten die Funktion mit false, damit das HTML-Form nicht vom Browser
+	// sondern nur von unserem JavaScript abgeschickt wird:
+	return false;
+}
+
+// Laden der Resultate-Liste mittels JavaScript-Request:
+async function loadResultList() {
+	const resultDiv = document.getElementById('results');
+	const listRes = await fetch("http://localhost:3000/api/get-texts")
+	const resHtml = await listRes.text();
+	resultDiv.innerHTML = resHtml;
+}
+</script>
 
 	</main>
 
 	<footer>
 		Modul M347 - Dienste mit Containern
 	</footer>
-</body>
-
+  </body>
 </html>

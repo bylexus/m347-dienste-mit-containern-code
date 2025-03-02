@@ -1,5 +1,3 @@
-const bodyParser = require("body-parser");
-
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/**/*.jpg");
   eleventyConfig.addPassthroughCopy("src/**/*.png");

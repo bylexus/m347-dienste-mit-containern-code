@@ -17,6 +17,12 @@
  * Diese Applikation ist unschön, unsicher und monolithisch BY DESIGN!
  * Ziel ist, diese Applikation im Verlauf des Moduls M347 in einzelne Dienste / Container zu
  * "entwirren".
+ * 
+ * Lektion 005 - Entfernen der Code-Teile der statischen Site-Auslieferung
+ * -------------------------------------------------------------------------
+ * 
+ * Hier wurden alle Code-Teile entfernt, welche die statsche Frontend-Webseite ausgeliefert
+ * haben: Diese wird nun von der Frontend-Applikation in einem eigenen Container übernommen.
  *
  * (c) Alexander Schenkel, alexander.schenkel@bztf.ch
  */
@@ -25,7 +31,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const config = require("./config.js");
-const staticSiteFolder = "site";
 
 const app = express();
 const port = config.server.port;
@@ -235,14 +240,6 @@ function sendFeedbackEmail(name, vorname) {
   });
 }
 // ---------------------------------------------------------------
-
-// ---------------------------------------------------------------
-// Route-Handler alle statischen Files (restliche URLs)
-// ---------------------------------------------------------------
-// statische (Frontend)-Site: alle Files unter site/ werden
-// als statische Dateien ausgeliefert:
-// Diesen Teil wollen wir später vom Backend-Server lösen:
-app.use(express.static(staticSiteFolder));
 
 // ---------------------------------------------------------------
 // App-Start

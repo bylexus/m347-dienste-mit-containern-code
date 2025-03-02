@@ -1,99 +1,95 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
+	<head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Feedback-Demo</title>
-	<link rel="stylesheet" href="../css/styles.css" />
-</head>
-
-<body>
-	<header>
-		<nav>
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/lego-heads/">Lego-Heads</a></li>
-				<li><a href="/formular/">Form-Demo</a></li>
-				<li><a href="/db-demo/">DB-Demo</a></li>
-			</ul>
-		</nav>
-	</header>
-
-	<main>
-
-		<h1>Formular-Demo</h1>
-
-		<p>Dieses Formular dient als Demo für:</p>
-
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
 		<ul>
-			<li>das Senden von Formulardaten an ein Backend</li>
-			<li>das Auswerten der Formulardaten im Backend</li>
-			<li>das Senden einer Antwort aufgrund der Daten vom Server</li>
-			<li>Die Seite verwendet JavaScript für das Senden/Empfangen der Daten zum Backend (anstatt Old-Scool
-				Form-Posts)</a></li>
+			<li><a href="../">Home</a></li>
+			<li><a href="../lego-heads/">Lego-Heads</a></li>
+			<li><a href="../formular/">Form-Demo</a></li>
+			<li><a href="../db-demo/">DB-Demo</a></li>
 		</ul>
+	  </nav>
+    </header>
 
-		<!-- Wir verwenden JavaScript für Form-Requests, um die Seite nicht neu laden zu müssen: -->
-		<form id="input-form" enctype="application/x-www-form-urlencoded" onsubmit="submitForm()">
-			<div>
-				<label>
-					Name:
-					<input name="name" />
-				</label>
-			</div>
-			<div>
-				<label>
-					Vorname:
-					<input name="vorname" />
-				</label>
-			</div>
-			<div>
-				<button type="submit" id="senden" onclick=submitForm()>Absenden</button>
-			</div>
-		</form>
+    <main>
+		
+<h1>Formular-Demo</h1>
 
-		<script>
-			// Senden der Formulardaten mittels JavaScript-Request:
-			async function submitForm() {
-				const sendBtn = document.getElementById('senden');
-				const form = document.getElementById('input-form');
+<p>Dieses Formular dient als Demo für:</p>
 
-				try {
-					// Senden-Btn deaktivieren:
-					sendBtn.setAttribute('disabled', true);
+<ul>
+  <li>das Senden von Formulardaten an ein Backend</li>
+  <li>das Auswerten der Formulardaten im Backend</li>
+  <li>das Senden einer Antwort aufgrund der Daten vom Server</li>
+  <li>Die Seite verwendet JavaScript für das Senden/Empfangen der Daten zum Backend (anstatt Old-Scool Form-Posts)</a></li> 
+</ul>
 
-					// Formulardaten senden:
-					const sendRes = await fetch('http://localhost:3000/feedback', {
-						method: 'POST',
-						mode: 'cors',
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded'
-						},
-						body: new URLSearchParams(new FormData(form)),
-					});
+<!-- Wir verwenden JavaScript für Form-Requests, um die Seite nicht neu laden zu müssen: -->
+<form id="input-form" enctype="application/x-www-form-urlencoded" onsubmit="submitForm()">
+  <div>
+    <label>
+      Name:
+      <input name="name" />
+    </label>
+  </div>
+  <div>
+    <label>
+      Vorname:
+      <input name="vorname" />
+    </label>
+  </div>
+  <div>
+	<button type="submit" id="senden" onclick=submitForm()>Absenden</button>
+  </div>
+</form>
 
-					// die Antwort übschreibt das HTML-Form:
-					const responseText = await sendRes.text();
-					const answerObj = document.createElement('div');
-					answerObj.innerHTML = responseText;
-					form.parentNode.replaceChild(answerObj, form);
-				} catch (e) {
-					console.error(e);
-				}
+<script>
+// Senden der Formulardaten mittels JavaScript-Request:
+async function submitForm() {
+	const sendBtn = document.getElementById('senden');
+	const form = document.getElementById('input-form');
 
-				// wir beantworten die Funktion mit false, damit das HTML-Form nicht vom Browser
-				// sondern nur von unserem JavaScript abgeschickt wird:
-				return false;
-			}
-		</script>
+	try {
+		// Senden-Btn deaktivieren:
+		sendBtn.setAttribute('disabled', true);
+
+		// Formulardaten senden:
+		const sendRes = await fetch('http://localhost:3000/feedback', {
+			method: 'POST',
+			mode: 'cors',
+			headers:{
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: new URLSearchParams(new FormData(form)),
+		});
+
+		// die Antwort übschreibt das HTML-Form:
+    const responseText = await sendRes.text();
+    const answerObj = document.createElement('div');
+    answerObj.innerHTML = responseText;
+    form.parentNode.replaceChild(answerObj, form);
+	} catch(e) {
+    console.error(e);
+  }
+
+	// wir beantworten die Funktion mit false, damit das HTML-Form nicht vom Browser
+	// sondern nur von unserem JavaScript abgeschickt wird:
+	return false;
+}
+</script>
 
 	</main>
 
 	<footer>
 		Modul M347 - Dienste mit Containern
 	</footer>
-</body>
-
+  </body>
 </html>
