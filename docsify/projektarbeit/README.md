@@ -96,12 +96,12 @@ Wie oben aufgezeigt ist es Ihre Aufgabe, die fertig umgebaute Applikation abzuli
 	* **docsify-Container**: Dieser Container stellt die laufende `docsify`-Dokumentation zur Verfügung, welcher die Dokumentation ausliefert.
 * Sie erstellen die notwendigen Scripte / Compose-Files, um alle Dienste
 	miteinander zu starten / zu koordinieren
-* Sie liefern den gesamten Code inkl. dazu notwendiger Docker- und Compose-File und Dokumentation im **Classroom-Git-Repository** ab.
+* Sie liefern den gesamten Code inkl. dazu notwendiger Docker- und Compose-File und Dokumentation als zip-Datei ab.
 * Sie **dokumentieren** die Architektur und die einzelnen Dienste in der `docsify`-Dokumentation, welche ebenfalls Teil des Repositories ist.
 
 ## Abgabe
 
-Sie geben den **gesamten Code inkl. Dokumentation, Konfiguration und Datenbank-Scripte** via gihub classroom-Repository ab. Ihr git-Repository sollte beinhalten:
+Sie geben den **gesamten Code inkl. Dokumentation, Konfiguration und Datenbank-Scripte** als zip-Datei ab. Diese Datei muss beinhalten:
 
 * Die Dokumentation als `docsify`-Dokumentation und -Container (siehe unten)
 * Alle Scripte, Dateien und Konfigurationen, um alle Container-Dienste
@@ -121,8 +121,8 @@ Ihr Repository muss alles notwendige liefern, damit ich die Dienste starten kann
 Ich werde folgendes ausführen:
 
 ```sh
-git clone /url/zu/ihrem/repo
-cd [ihr-repo]
+unzip pfad/zu/ihrem.zip
+cd [ihr-projekt]
 docker compose up
 ```
 
