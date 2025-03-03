@@ -17,10 +17,10 @@
  * Diese Applikation ist unschön, unsicher und monolithisch BY DESIGN!
  * Ziel ist, diese Applikation im Verlauf des Moduls M347 in einzelne Dienste / Container zu
  * "entwirren".
- * 
+ *
  * Lektion 005 - Entfernen der Code-Teile der statischen Site-Auslieferung
  * -------------------------------------------------------------------------
- * 
+ *
  * Hier wurden alle Code-Teile entfernt, welche die statsche Frontend-Webseite ausgeliefert
  * haben: Diese wird nun von der Frontend-Applikation in einem eigenen Container übernommen.
  *
@@ -185,6 +185,7 @@ function setupEmail() {
   return new Promise((resolve, reject) => {
     // Setting up fake email using ethereal.email:
     // Generate SMTP service account from ethereal.email
+    /*
     nodemailer.createTestAccount((err, account) => {
       if (err) {
         console.error("Failed to create a testing account. " + err.message);
@@ -206,6 +207,20 @@ function setupEmail() {
 
       resolve(emailTransport);
     });
+    */
+
+    // Create a SMTP transporter object
+    let emailTransport = nodemailer.createTransport({
+      host: config.mailer.smtp_host,
+      port: config.mailer.smtp_port,
+      secure: config.mailer.secure,
+      // auth: {
+      //   user: config.mailer.smtp_user,
+      //   pass: config.mailer.smtp_password,
+      // },
+    });
+
+    resolve(emailTransport);
   });
 }
 
@@ -218,9 +233,9 @@ function sendFeedbackEmail(name, vorname) {
   return new Promise((resolve, reject) => {
     // Message object
     let message = {
-      from: "Sender Name <sender@example.com>",
-      to: "Recipient <recipient@example.com>",
-      subject: "Feedback-Formular",
+      from: config.feedbackConfig.from_address,
+      to: config.feedbackConfig.to_address,
+      subject: "Feedback von M347",
       text: `Feedback von ${name}, ${vorname} erhalten.`,
       html: `<p>Feedback von <b>${name}, ${vorname}</b> erhalten.</p>`,
     };

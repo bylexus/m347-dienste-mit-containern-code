@@ -57,3 +57,14 @@ Wenn erstellt, dann stoppen/starten mit:
 docker start m347-docsify
 docker stop m347-docsify
 ```
+
+### smtp4dev
+
+**Container erstellen:**
+
+```sh
+# Volume für persistente Daten anlegen:
+docker volume create m347-smtp4dev
+
+# Container starten:
+docker run --name m347-mail -d -p 5050:80 -p 2525:25 -p 4343:143 -v m347-smtp4dev:/smtp4dev -e 'ServerOptions__Urls=http://*:80' rnwood/smtp4dev

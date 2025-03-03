@@ -1,0 +1,14 @@
+services:
+  smtp4dev:
+    image: rnwood/smtp4dev
+    ports:
+      - "2525:25"
+      - "5050:80"
+      - "4343:443"
+    volumes:
+      - smtp4dev:/smtp4dev
+    environment:
+      - ServerOptions__Urls=http://0.0.0.0:80
+
+volumes:
+  smtp4dev: {}
