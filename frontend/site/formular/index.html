@@ -62,7 +62,7 @@ async function submitForm() {
 		sendBtn.setAttribute('disabled', true);
 
 		// Formulardaten senden:
-		const sendRes = await fetch('http://localhost:3000/feedback', {
+		const sendRes = await fetch('http://localhost:3001/feedback', {
 			method: 'POST',
 			mode: 'cors',
 			headers:{
